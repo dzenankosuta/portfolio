@@ -482,7 +482,10 @@ section {
   background-color: var(--color-white);
 }
 .portfolios .portfolio-item .hover-items .icons .icon:hover i {
-  color: var(--color-primary);
+  color: var(--color-black);
+}
+.portfolios .portfolio-item .hover-items .icons .icon:hover span {
+  color: var(--color-black);
 }
 
 .portfolio-item:hover .hover-items {
