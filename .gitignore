@@ -1,2 +1,7 @@
 # PHPStorm
 .idea
+.DS_Store
+.idea
+.vscode
+*.iml
+*.ipr
