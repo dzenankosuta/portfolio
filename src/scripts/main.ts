@@ -427,9 +427,31 @@ function initRails() {
   });
 }
 
+// ── full-page captures scroll by hand on touch screens, so there they need keyboard focus too
+function initFullPages() {
+  const screens = $$('.browser--full .device__screen');
+  if (!screens.length) return;
+  const sync = () =>
+    screens.forEach((el) => {
+      if (getComputedStyle(el).overflowY === 'auto' && el.scrollHeight > el.clientHeight + 2) {
+        el.tabIndex = 0;
+        el.setAttribute('role', 'region');
+        el.setAttribute('aria-label', 'Full page, scroll it');
+      } else {
+        el.removeAttribute('tabindex');
+        el.removeAttribute('role');
+        el.removeAttribute('aria-label');
+      }
+    });
+  sync();
+  screens.forEach((el) => $('img', el)?.addEventListener('load', sync));
+  addEventListener('resize', sync);
+}
+
 initTheme();
 initMenu();
 initRails();
+initFullPages();
 initClock();
 initScramble();
 initCounters();
