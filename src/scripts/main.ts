@@ -328,15 +328,24 @@ function initTop() {
   );
 }
 
-// ── floating back-to-top button: appears after a short scroll (the click is handled by initTop)
+// ── floating back-to-top button: appears after a short scroll and steps aside for the footer's own link
+// (the click is handled by initTop)
 function initToTop() {
   const btn = $('.to-top');
   if (!btn) return;
   let queued = false;
+  let footerInView = false;
   const sync = () => {
     queued = false;
-    btn.toggleAttribute('data-on', scrollY > innerHeight * 0.75);
+    btn.toggleAttribute('data-on', scrollY > innerHeight * 0.75 && !footerInView);
   };
+  const footer = $('.footer');
+  if (footer) {
+    new IntersectionObserver(([entry]) => {
+      footerInView = entry.isIntersecting;
+      sync();
+    }).observe(footer);
+  }
   addEventListener(
     'scroll',
     () => {
