@@ -32,7 +32,7 @@ export const hero = {
     { value: '2021', count: 2021, label: 'shipping software professionally since' },
     { value: '17', count: 17, label: 'independent products built & shipped' },
     { value: '8', count: 8, label: 'apps live on the App Store & Google Play' },
-    { value: '10,000s', count: 10000, suffix: 's', label: 'users reached by the IoT app I build at work' },
+    { value: '140K+', count: 140, suffix: 'K+', label: "Google Play installs of the company apps I've shipped" },
   ],
   marquee: [
     'React Native', 'Expo', 'TypeScript', 'React', 'Next.js', 'Node.js', 'Python', 'Django', 'Flask', 'PostgreSQL',
@@ -71,7 +71,7 @@ export const experience: Role[] = [
     product: 'ZeroMouse: an AI-powered smart cat flap (IoT hardware + mobile app)',
     platforms: 'iOS & Android',
     bullets: [
-      'Build and ship the React Native app for ZeroMouse, a smart IoT/AI hardware product now reaching tens of thousands of users in early access.',
+      'Build and ship the React Native app for ZeroMouse, a smart IoT/AI hardware product with 20,000+ installs on Google Play alone.',
       "Own the firmware and AI-services integration, and help shape the app's architecture and state management.",
     ],
     link: { label: 'zeromouse.com', href: 'https://zeromouse.com' },
@@ -85,7 +85,7 @@ export const experience: Role[] = [
     product: 'Global eSIM & IoT connectivity platform',
     platforms: 'iOS, Android, Web',
     bullets: [
-      'Delivered the React Native mobile app and React web app for a global eSIM and IoT connectivity platform.',
+      'Delivered the React Native mobile app (100,000+ installs on Google Play) and the React web app for a global eSIM and IoT connectivity platform.',
       'Owned the automated eSIM activation flow and built in-app chatbot support, simplifying setup for travelers.',
       'Worked with backend, design and product teams to improve cross-border connectivity.',
     ],

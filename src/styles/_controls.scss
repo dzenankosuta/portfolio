@@ -267,3 +267,65 @@
     box-shadow: inset 0 -2px 0 var(--color-signal);
   }
 }
+
+// floating back-to-top, shown once the page has scrolled a little
+.to-top {
+  position: fixed;
+  right: max(var(--space-16), env(safe-area-inset-right));
+  bottom: max(var(--space-16), env(safe-area-inset-bottom));
+  z-index: 80;
+  display: grid;
+  place-items: center;
+  width: var(--button-l);
+  height: var(--button-l);
+  border: 1px solid var(--color-line);
+  background: var(--color-bg);
+  color: var(--color-ink);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(12px);
+  transition:
+    opacity 200ms var(--ease-out),
+    transform 300ms var(--ease-expo),
+    background-color 160ms var(--ease-out),
+    color 160ms var(--ease-out),
+    visibility 0s linear 300ms;
+
+  &[data-on] {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    transition:
+      opacity 200ms var(--ease-out),
+      transform 300ms var(--ease-expo),
+      background-color 160ms var(--ease-out),
+      color 160ms var(--ease-out);
+  }
+
+  .icon {
+    width: 18px;
+    height: 18px;
+    transition: transform 200ms var(--ease-out);
+  }
+
+  @media (hover: hover) {
+    &:hover {
+      background: var(--color-ink);
+      color: var(--color-bg);
+    }
+
+    &:hover .icon {
+      transform: translateY(-2px);
+    }
+  }
+
+  @media (max-width: 639px) {
+    width: var(--button-m);
+    height: var(--button-m);
+  }
+
+  // the full-screen menu has its own controls
+  [data-menu-open] & {
+    display: none;
+  }
+}

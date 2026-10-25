@@ -328,6 +328,27 @@ function initTop() {
   );
 }
 
+// ── floating back-to-top button: appears after a short scroll (the click is handled by initTop)
+function initToTop() {
+  const btn = $('.to-top');
+  if (!btn) return;
+  let queued = false;
+  const sync = () => {
+    queued = false;
+    btn.toggleAttribute('data-on', scrollY > innerHeight * 0.75);
+  };
+  addEventListener(
+    'scroll',
+    () => {
+      if (queued) return;
+      queued = true;
+      requestAnimationFrame(sync);
+    },
+    { passive: true },
+  );
+  sync();
+}
+
 // ── lightbox for case-study galleries
 function initLightbox() {
   const dialog = $<HTMLDialogElement>('dialog.lightbox');
@@ -461,5 +482,6 @@ initPreview();
 initCopy();
 initActiveNav();
 initTop();
+initToTop();
 initLightbox();
 initVideos();
