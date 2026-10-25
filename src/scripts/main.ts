@@ -401,13 +401,18 @@ function initVideos() {
 function initRails() {
   const rails = $$('.card__media, .case__hero, .case__rail');
   if (!rails.length) return;
+  // region labels must be unique per page, so name the project
+  const label = (el: HTMLElement) => {
+    const name = (el.closest('.card')?.querySelector('.card__name') ?? $('.case__name'))?.textContent?.trim();
+    return name ? `${name} screens, scroll sideways` : 'Screens, scroll sideways';
+  };
   const sync = () =>
     rails.forEach((el) => {
       const scrolls = el.scrollWidth > el.clientWidth + 2;
       if (scrolls) {
         el.tabIndex = 0;
         el.setAttribute('role', 'region');
-        el.setAttribute('aria-label', 'Screens, scroll sideways');
+        if (!el.classList.contains('case__rail')) el.setAttribute('aria-label', label(el));
       } else if (!el.classList.contains('case__rail')) {
         el.removeAttribute('tabindex');
         el.removeAttribute('role');

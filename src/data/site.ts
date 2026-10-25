@@ -20,7 +20,7 @@ export const person = {
 export const meta = {
   title: 'Dženan Košuta — Software Engineer (React Native & full-stack)',
   description:
-    'Software engineer from Novi Pazar, Serbia. I design, build and ship mobile apps and multi-tenant web platforms end to end — 16 products, 8 of them live on the App Store and Google Play.',
+    'Software engineer from Novi Pazar, Serbia. I design, build and ship mobile apps and multi-tenant web platforms end to end — 17 products, 8 of them live on the App Store and Google Play.',
 };
 
 export const hero = {
@@ -30,7 +30,7 @@ export const hero = {
     'Software engineer focused on cross-platform mobile development with React Native, with solid full-stack experience across React, Next.js, Node.js and Python. From API and AI integrations to release on the App Store and Google Play.',
   stats: [
     { value: '2021', count: 2021, label: 'shipping software professionally since' },
-    { value: '16', count: 16, label: 'independent products built & shipped' },
+    { value: '17', count: 17, label: 'independent products built & shipped' },
     { value: '8', count: 8, label: 'apps live on the App Store & Google Play' },
     { value: '10,000s', count: 10000, suffix: 's', label: 'users reached by the IoT app I build at work' },
   ],
@@ -145,8 +145,8 @@ export const chapterIntros = {
     facts: ['6 products', '5 live on both stores', 'Up to 16 languages with right-to-left', 'Widgets, offline, no ads'],
   },
   products: {
-    intro: 'Products of my own and platforms built for clients — finance, healthcare, real estate, non-profit and e-commerce.',
-    facts: ['Saldo', 'Ordino', 'Invest Portal', 'Udruženje „Pahulja”', 'Oud Andalous', '1vs1'],
+    intro: 'Products of my own and platforms built for clients — finance, healthcare, real estate, non-profit, e-commerce and local business.',
+    facts: ['Saldo', 'Ordino', 'Invest Portal', 'Udruženje „Pahulja”', 'Oud Andalous', 'DM Gebäudereinigung', '1vs1'],
   },
 };
 

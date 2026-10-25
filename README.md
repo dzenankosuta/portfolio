@@ -1,6 +1,6 @@
 # Dženan Košuta — portfolio
 
-Personal portfolio of Dženan Košuta, software engineer (React Native & full-stack): 16 independent products, the company roles behind them, and a case study for every project.
+Personal portfolio of Dženan Košuta, software engineer (React Native & full-stack): 17 independent products, the company roles behind them, and a case study for every project.
 
 **Live:** https://dzenankosuta.github.io/portfolio/
 

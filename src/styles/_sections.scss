@@ -213,11 +213,14 @@
 
   &__title-block {
     grid-column: 1 / 9;
+    container-type: inline-size;
   }
 
   &__name {
     margin-top: 12px;
     font: 700 clamp(48px, 9vw, 128px) / 0.92 var(--font-mono);
+    // mono glyphs are ~0.6em wide: cap the size so the longest word never breaks
+    font-size: min(clamp(48px, 9vw, 128px), 100cqi / (var(--longest, 1) * 0.6));
     letter-spacing: -0.04em;
     overflow-wrap: anywhere;
   }

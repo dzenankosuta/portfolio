@@ -29,6 +29,8 @@ const { project: p, prev, next } = Astro.props;
 const chapter = chapters[p.chapter];
 const status = p.status === 'live' ? 'Live' : p.status === 'production' ? 'In production' : null;
 const style = p.tint ? `--tint-ink:${p.tint[0]};--tint-paper:${p.tint[1]}` : undefined;
+// the title shrinks so its longest word fits on one line
+const longest = Math.max(...p.name.split(/\s+/).map((w) => w.length));
 
 // Open Graph: the project's widest visual
 const ogMedia = p.gallery.find((m) => m.kind === 'wide') ?? p.gallery.find((m) => m.kind === 'browser') ?? p.card[0];
@@ -102,7 +104,7 @@ const jsonLd = [
       <header class="grid12 case__head">
         <div class="case__title-block">
           <p class="t-label">{p.index}{p.flagship ? ' · Flagship' : ''}</p>
-          <h1 class="case__name" style={`view-transition-name: name-${p.slug}`}>{p.name}</h1>
+          <h1 class="case__name" style={`view-transition-name: name-${p.slug}; --longest: ${longest}`}>{p.name}</h1>
           {p.arabic && <p class="t-arabic case__arabic" lang="ar" dir="rtl">{p.arabic}</p>}
           <p class="t-lead case__tagline">{p.tagline}</p>
           <div class="case__links">
