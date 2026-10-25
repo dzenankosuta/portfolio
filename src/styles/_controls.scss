@@ -1,0 +1,269 @@
+// Buttons, link buttons, chips, store badges, filter tabs (FigCraft page 03 · 01, 04).
+
+.btn {
+  --h: var(--button-l);
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: var(--h);
+  padding: 0 20px;
+  border: 1px solid var(--color-line);
+  font: 700 14px/20px var(--font-mono);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transition:
+    transform 160ms var(--ease-out),
+    box-shadow 160ms var(--ease-out),
+    background-color 160ms var(--ease-out),
+    color 160ms var(--ease-out);
+
+  &--m {
+    --h: var(--button-m);
+    padding: 0 16px;
+    font-size: 13px;
+  }
+
+  &--primary {
+    background: var(--color-signal);
+    border-color: var(--color-signal);
+    color: var(--color-on-signal);
+
+    @media (hover: hover) {
+      &:hover {
+        transform: translate(-2px, -2px);
+        box-shadow: 4px 4px 0 var(--color-ink);
+      }
+    }
+
+    &:active {
+      transform: none;
+      box-shadow: none;
+    }
+  }
+
+  &--secondary {
+    @media (hover: hover) {
+      &:hover {
+        background: var(--color-ink);
+        color: var(--color-bg);
+      }
+    }
+
+    &:active {
+      background: var(--color-ink-2);
+      color: var(--color-bg);
+    }
+  }
+
+  &--ghost {
+    border-color: transparent;
+    padding: 0 12px;
+
+    @media (hover: hover) {
+      &:hover {
+        text-decoration: underline;
+        text-underline-offset: 4px;
+      }
+    }
+  }
+
+  &--icon {
+    width: var(--button-m);
+    min-height: var(--button-m);
+    padding: 0;
+    border-color: var(--color-line);
+  }
+
+  .arrow {
+    display: inline-block;
+    transition: transform 200ms var(--ease-out);
+  }
+
+  @media (hover: hover) {
+    &:hover .arrow--r {
+      transform: translateX(3px);
+    }
+
+    &:hover .arrow--d {
+      transform: translateY(2px);
+    }
+
+    &:hover .arrow--ne {
+      transform: translate(2px, -2px);
+    }
+  }
+}
+
+// compact bordered link (cards, case studies)
+.link-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 40px;
+  padding: 0 14px;
+  border: 1px solid var(--color-line);
+  font: 500 12px/16px var(--font-mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transition:
+    background-color 160ms var(--ease-out),
+    color 160ms var(--ease-out);
+
+  @media (pointer: coarse) {
+    min-height: var(--touch);
+  }
+
+  @media (hover: hover) {
+    &:hover {
+      background: var(--color-ink);
+      color: var(--color-bg);
+    }
+  }
+
+  &--accent {
+    border-color: var(--chapter-accent);
+    color: var(--chapter-accent);
+
+    @media (hover: hover) {
+      &:hover {
+        background: var(--chapter-accent);
+        color: var(--chapter-bg);
+      }
+    }
+  }
+}
+
+.links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+// text link with arrow
+.text-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: var(--touch);
+  font: 500 13px/16px var(--font-mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: underline;
+  text-decoration-color: var(--color-line-soft);
+  text-underline-offset: 5px;
+  transition: text-decoration-color 160ms var(--ease-out);
+
+  &:hover {
+    text-decoration-color: currentColor;
+  }
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 24px;
+  padding: 0 8px;
+  border: 1px solid var(--color-line-soft);
+  font: 500 11px/14px var(--font-mono);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-ink-2);
+  white-space: nowrap;
+
+  &--status {
+    border-color: var(--color-line);
+    color: var(--color-ink);
+
+    &::before {
+      content: '';
+      width: 7px;
+      height: 7px;
+      background: var(--chapter-accent);
+    }
+  }
+
+  &--stack {
+    text-transform: none;
+    letter-spacing: 0;
+    font-size: 12px;
+  }
+}
+
+// filter tabs + chips (work index)
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+
+  @media (max-width: 639px) {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: none;
+    margin-inline: calc(-1 * var(--margin));
+    padding-inline: var(--margin);
+    mask-image: linear-gradient(90deg, #000 85%, transparent);
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  &__divider {
+    width: 1px;
+    height: 28px;
+    margin-inline: 4px;
+    background: var(--color-line-soft);
+    flex: none;
+  }
+}
+
+.tab {
+  flex: none;
+  min-height: 40px;
+  padding: 0 14px;
+  border: 1px solid var(--color-line-soft);
+  font: 500 12px/16px var(--font-mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-ink-2);
+  transition:
+    background-color 160ms var(--ease-out),
+    color 160ms var(--ease-out),
+    border-color 160ms var(--ease-out);
+
+  @media (pointer: coarse) {
+    min-height: var(--touch);
+  }
+
+  @media (hover: hover) {
+    &:hover {
+      border-color: var(--color-line);
+      color: var(--color-ink);
+    }
+  }
+
+  &[aria-pressed='true'] {
+    background: var(--color-ink);
+    border-color: var(--color-ink);
+    color: var(--color-bg);
+  }
+
+  &--chip[aria-pressed='true'] {
+    background: transparent;
+    border-color: var(--color-signal);
+    color: var(--color-ink);
+    box-shadow: inset 0 -2px 0 var(--color-signal);
+  }
+}

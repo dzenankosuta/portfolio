@@ -1,0 +1,50 @@
+---
+import { Image } from 'astro:assets';
+import Device from './Device.astro';
+import ProjectLinks from './ProjectLinks.astro';
+import type { Project } from '../data/projects';
+import { img } from '../lib/images';
+import { projectUrl } from '../lib/url';
+
+interface Props {
+  project: Project;
+  i?: number;
+}
+
+const { project: p, i = 0 } = Astro.props;
+const variant = p.flagship ? 'flagship' : p.wide ? 'wide' : 'standard';
+const style = [p.tint && `--tint-ink:${p.tint[0]};--tint-paper:${p.tint[1]}`, `--i:${i % 2}`].filter(Boolean).join(';');
+const status = p.status === 'live' ? 'Live' : p.status === 'production' ? 'In production' : null;
+const label = `${p.index}${p.flagship ? ' · Flagship' : ''}`;
+const meta = [p.kind, p.year, p.role].join(' · ');
+const hasRail = p.card.length > 1;
+---
+
+<article class:list={['card', `card--${variant}`, p.tint && 'card--tinted']} style={style} data-reveal>
+  <div class="card__media">
+    {p.note && <p class="card__note" aria-hidden="true">↓ {p.note}</p>}
+    {p.card.map((m) => <Device slug={p.slug} media={m} />)}
+    {hasRail && <span class="rail-hint" aria-hidden="true">Swipe →</span>}
+  </div>
+  <div class="card__body">
+    <div class="card__top">
+      {!p.flagship && <Image class="card__icon" src={img(p.slug, 'icon')} alt="" width={48} densities={[1, 2]} loading="lazy" />}
+      <p class="t-label">{label}</p>
+    </div>
+    <h3 class="card__name" style={`view-transition-name: name-${p.slug}`}>
+      <a href={projectUrl(p.slug)}>{p.name}</a>
+    </h3>
+    {p.arabic && <p class="t-arabic card__arabic" lang="ar" dir="rtl">{p.arabic}</p>}
+    <p class="card__tagline">{p.tagline}</p>
+    <p class="card__meta">{meta}</p>
+    <p class="card__numbers">{p.numbers.join(' · ')}</p>
+    <ul class="chips" aria-label="Platforms and status">
+      {p.platforms.map((pl) => <li class="chip">{pl}</li>)}
+      {status && <li class="chip chip--status">{status}</li>}
+    </ul>
+    <div class="card__foot">
+      <ProjectLinks links={p.links} name={p.name} />
+      <span class="card__case" aria-hidden="true">Case study <span class="arrow">→</span></span>
+    </div>
+  </div>
+</article>

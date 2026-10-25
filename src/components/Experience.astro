@@ -1,0 +1,54 @@
+---
+import ChapterHeader from './ChapterHeader.astro';
+import { experience, chapterIntros } from '../data/site';
+---
+
+<section class="section chapter" id="experience" aria-labelledby="experience-title">
+  <div class="wrap grid-lines">
+    <ChapterHeader index="01" title="Experience" id="experience-title" intro={chapterIntros.experience.intro} facts={chapterIntros.experience.facts} />
+
+    <ol class="timeline">
+      {
+        experience.map((r, i) => (
+          <li class="role" data-reveal style={`--i:${i}`}>
+            <p class="t-label role__period">
+              <time datetime={r.start}>{r.period.split(' — ')[0]}</time> — {r.end ? <time datetime={r.end}>{r.period.split(' — ')[1]}</time> : r.period.split(' — ')[1]}
+            </p>
+            <div class="role__who">
+              <h3 class="t-h3">{r.company}</h3>
+              <p class="t-label role__role">{r.role}</p>
+            </div>
+            <div class="role__what">
+              <p class="role__product">{r.product}</p>
+              <ul class="role__bullets">{r.bullets.map((b) => <li>{b}</li>)}</ul>
+              {r.products && (
+                <div class="role__products">
+                  <p class="t-label">Products I built there, named as company products:</p>
+                  {r.products.map((prod) => (
+                    <div class="role__product-item">
+                      <h4>{prod.name}</h4>
+                      <p set:html={prod.description.replace('ﷺ', '<span class="salawat">ﷺ</span>')} />
+                      <div class="links">
+                        {prod.links.map((l) => (
+                          <a class="link-btn" href={l.href} target="_blank" rel="noopener" aria-label={`${prod.name}: ${l.label} (opens in a new tab)`}>
+                            {l.label} <span aria-hidden="true">↗</span>
+                          </a>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+            <div class="role__meta">
+              <p class="t-label">{r.platforms}</p>
+              <a class="text-link" href={r.link.href} target="_blank" rel="noopener">
+                {r.link.label} <span aria-hidden="true">↗</span>
+              </a>
+            </div>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>

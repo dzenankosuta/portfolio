@@ -1,0 +1,254 @@
+// Reset, typography, accessibility helpers and motion primitives.
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  scroll-padding-top: calc(var(--nav-h) + 16px);
+  scrollbar-gutter: stable;
+  hanging-punctuation: first last;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+body {
+  min-height: 100dvh;
+  background: var(--color-bg);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  font-size: 18px;
+  line-height: 1.55;
+  font-feature-settings: 'ss01', 'cv11';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  overflow-x: clip;
+
+  @media (max-width: 639px) {
+    font-size: 17px;
+  }
+}
+
+img,
+picture,
+video,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+img {
+  height: auto;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-weight: 600;
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+::selection {
+  background: var(--color-signal);
+  color: var(--color-on-signal);
+}
+
+:focus-visible {
+  outline: var(--focus-width) solid var(--color-focus);
+  outline-offset: var(--focus-offset);
+}
+
+[hidden] {
+  display: none !important;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip-link {
+  position: fixed;
+  top: 8px;
+  left: 8px;
+  z-index: 200;
+  padding: 12px 16px;
+  background: var(--color-signal);
+  color: var(--color-on-signal);
+  font: 700 14px/1 var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  transform: translateY(-160%);
+  transition: transform 160ms var(--ease-out);
+
+  &:focus-visible {
+    transform: none;
+  }
+}
+
+// ── type styles (FigCraft page 02)
+.t-label {
+  font: 500 12px/16px var(--font-mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+.t-table {
+  font: 400 13px/20px var(--font-mono);
+}
+
+.t-mono {
+  font-family: var(--font-mono);
+}
+
+.t-h2 {
+  font: 600 64px/1 var(--font-sans);
+  letter-spacing: -0.03em;
+
+  @media (max-width: 1023px) {
+    font-size: 48px;
+  }
+
+  @media (max-width: 639px) {
+    font-size: 40px;
+    line-height: 44px;
+    letter-spacing: -0.02em;
+  }
+}
+
+.t-h3 {
+  font: 600 32px/36px var(--font-sans);
+  letter-spacing: -0.01em;
+
+  @media (max-width: 639px) {
+    font-size: 26px;
+    line-height: 30px;
+  }
+}
+
+.t-lead {
+  font: 400 24px/34px var(--font-sans);
+  letter-spacing: -0.01em;
+  color: var(--color-ink-2);
+
+  @media (max-width: 639px) {
+    font-size: 19px;
+    line-height: 28px;
+    letter-spacing: 0;
+  }
+}
+
+.t-small {
+  font: 400 15px/22px var(--font-sans);
+}
+
+.t-arabic {
+  font: 400 64px/1.5 var(--font-arabic);
+  color: var(--chapter-accent-2);
+  direction: rtl;
+  unicode-bidi: isolate;
+  text-align: left;
+
+  @media (max-width: 639px) {
+    font-size: 44px;
+  }
+}
+
+.t-serif {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+}
+
+.salawat {
+  font-family: var(--font-arabic);
+}
+
+.nowrap {
+  white-space: nowrap;
+}
+
+// ── motion primitives (progressive: content is visible without JS)
+.js [data-reveal] {
+  opacity: 0;
+  transform: translateY(12px);
+  transition:
+    opacity var(--dur-reveal) var(--ease-out) calc(var(--i, 0) * 60ms),
+    transform calc(var(--dur-reveal) + 100ms) var(--ease-out) calc(var(--i, 0) * 60ms);
+}
+
+.js [data-reveal].is-in {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .js [data-reveal] {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+// cross-document view transitions (Chrome, Safari 18.2+); zero JS
+@view-transition {
+  navigation: auto;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 260ms;
+}

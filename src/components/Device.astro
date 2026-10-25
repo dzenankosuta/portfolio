@@ -1,0 +1,75 @@
+---
+import { Image, getImage } from 'astro:assets';
+import type { Media } from '../data/projects';
+import { img } from '../lib/images';
+
+interface Props {
+  slug: string;
+  media: Media;
+  /** load immediately (above the fold) */
+  eager?: boolean;
+  /** open in the lightbox on click */
+  zoom?: boolean;
+  /** CSS `sizes` hint for the main image */
+  sizes?: string;
+  class?: string;
+}
+
+const { slug, media, eager = false, zoom = false, sizes, class: extra = '' } = Astro.props;
+const src = img(slug, media.image);
+
+const widthsBy: Record<Media['kind'], number[]> = {
+  phone: [240, 360, 540, 720],
+  browser: [480, 800, 1200, 1600],
+  tv: [480, 800, 1200],
+  a4: [300, 520, 800],
+  photo: [300, 520, 800],
+  wide: [600, 1000, 1400],
+};
+const sizesBy: Record<Media['kind'], string> = {
+  phone: '(max-width: 639px) 160px, 240px',
+  browser: '(max-width: 639px) 84vw, (max-width: 1023px) 90vw, 800px',
+  tv: '(max-width: 639px) 84vw, 600px',
+  a4: '(max-width: 639px) 170px, 280px',
+  photo: '(max-width: 639px) 150px, 300px',
+  wide: '(max-width: 1023px) 90vw, 900px',
+};
+const widths = widthsBy[media.kind].filter((w) => w <= src.width);
+if (!widths.length) widths.push(src.width);
+
+const large = zoom ? await getImage({ src, width: Math.min(src.width, media.kind === 'phone' ? 900 : 1680), format: 'webp' }) : null;
+const isScreen = media.kind === 'phone' || media.kind === 'browser' || media.kind === 'tv';
+---
+
+<figure class:list={['device', media.kind, extra]}>
+  {
+    media.kind === 'browser' && (
+      <div class="browser__bar" aria-hidden="true">
+        <span class="browser__dot" />
+        <span class="browser__dot" />
+        <span class="browser__dot" />
+        {media.url && <span class="browser__url">{media.url}</span>}
+      </div>
+    )
+  }
+  <div class={isScreen ? 'device__screen' : 'device__body'} style={isScreen ? undefined : 'height:100%'}>
+    {
+      large ? (
+        <a class="zoom" href={large.src} data-zoom data-w={large.attributes.width} data-h={large.attributes.height} aria-label={`Enlarge: ${media.alt}`}>
+          <Image src={src} alt={media.alt} widths={widths} sizes={sizes ?? sizesBy[media.kind]} loading={eager ? 'eager' : 'lazy'} decoding="async" />
+        </a>
+      ) : (
+        <Image
+          src={src}
+          alt={media.alt}
+          widths={widths}
+          sizes={sizes ?? sizesBy[media.kind]}
+          loading={eager ? 'eager' : 'lazy'}
+          decoding="async"
+          fetchpriority={eager ? 'high' : undefined}
+        />
+      )
+    }
+  </div>
+  {media.caption && <figcaption>{media.caption}</figcaption>}
+</figure>

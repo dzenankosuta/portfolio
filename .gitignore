@@ -1,7 +1,23 @@
-# PHPStorm
-.idea
+# build output
+dist/
+.astro/
+
+# dependencies
+node_modules/
+
+# logs
+npm-debug.log*
+
+# environment
+.env
+.env.*
+
+# editors / OS
 .DS_Store
 .idea
 .vscode
 *.iml
 *.ipr
+
+# Design brief package (contains client/private material)
+design-brief/

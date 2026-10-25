@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="228" height="228" viewBox="0 0 228 228">
+  <title>girih-tile</title>
+  <g id="tile">
+    <path id="girih-tile" d="M114 0 L147.39 33.39 L147.39 80.61 L194.61 80.61 L228 114 L194.61 147.39 L147.39 147.39 L147.39 194.61 L114 228 L80.61 194.61 L80.61 147.39 L33.39 147.39 L0 114 L33.39 80.61 L80.61 80.61 L80.61 33.39 Z" fill="none" stroke="#000000" stroke-miterlimit="10"/>
+  </g>
+</svg>

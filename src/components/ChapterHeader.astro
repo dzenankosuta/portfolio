@@ -1,0 +1,29 @@
+---
+interface Props {
+  index: string;
+  title: string;
+  intro: string;
+  /** Instrument Serif accent phrase placed before the intro (faith chapter only) */
+  accent?: string;
+  facts: string[];
+  id?: string;
+  ruled?: boolean;
+}
+
+const { index, title, intro, accent, facts, id, ruled = false } = Astro.props;
+---
+
+<header class:list={['chapter-head', ruled && 'ruled']}>
+  <div class="grid12 chapter-head__top">
+    <p class="chapter-head__num" aria-hidden="true" data-reveal>{index}</p>
+    <div class="chapter-head__text" data-reveal style="--i:1">
+      <h2 class="t-h2" id={id}><span class="sr-only">{index} — </span>{title}</h2>
+      <p class="t-lead chapter-head__intro">
+        {accent && <span class="t-serif">{accent}</span>}{intro}
+      </p>
+    </div>
+  </div>
+  <ul class="t-label chapter-head__facts label-row dot-sep" aria-label={`${title} in short`}>
+    {facts.map((f) => <li>{f}</li>)}
+  </ul>
+</header>

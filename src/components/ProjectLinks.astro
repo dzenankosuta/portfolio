@@ -1,0 +1,32 @@
+---
+import type { ProjectLinks } from '../data/projects';
+import { host } from '../lib/url';
+
+interface Props {
+  links: ProjectLinks;
+  /** show the domain instead of "Web" */
+  long?: boolean;
+  name: string;
+}
+
+const { links, long = false, name } = Astro.props;
+const items = [
+  links.web && { href: links.web, label: long ? host(links.web) : 'Web', aria: `${name} website` },
+  links.demo && { href: links.demo, label: long ? host(links.demo) : 'Live client', aria: `${name} live client example` },
+  links.ios && { href: links.ios, label: 'App Store', aria: `${name} on the App Store` },
+  links.android && { href: links.android, label: 'Google Play', aria: `${name} on Google Play` },
+  links.instagram && { href: links.instagram, label: 'Instagram', aria: `${name} on Instagram` },
+].filter(Boolean) as { href: string; label: string; aria: string }[];
+---
+
+{
+  items.length > 0 && (
+    <div class="links">
+      {items.map((l) => (
+        <a class="link-btn" href={l.href} target="_blank" rel="noopener" aria-label={`${l.aria} (opens in a new tab)`}>
+          {l.label} <span aria-hidden="true">↗</span>
+        </a>
+      ))}
+    </div>
+  )
+}

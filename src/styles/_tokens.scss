@@ -1,0 +1,150 @@
+// Design tokens — exported from FigCraft (portfolio-v2.figcraft, page 02 Tokens), units added.
+// Theme: Ink (default) and Paper. Chapters override the accent layer.
+
+:root {
+  color-scheme: dark;
+
+  --color-bg: #0c0c0b;
+  --color-surface: #151513;
+  --color-ink: #f2efe8;
+  --color-ink-2: #c9c6be;
+  --color-muted: #8e8c85;
+  --color-line: #f2efe8;
+  --color-line-soft: rgb(242 239 232 / 0.14);
+  --color-signal: #ff6a3d;
+  --color-signal-text: #ff6a3d;
+  --color-on-signal: #0c0c0b;
+  --color-focus: #ff6a3d;
+  --color-disabled: #55534e;
+  --color-schools: #5faa7e;
+  --color-schools-rule: rgb(95 170 126 / 0.14);
+  --color-red-pen: #f06a5f;
+  --color-faith-bg: #0b1026;
+  --color-faith-surface: #151b36;
+  --color-faith-accent: #e0bc74;
+  --color-faith-gold: #e0bc74;
+  --color-faith-gold-fill: #e0bc74;
+  --color-faith-motif: rgb(224 188 116 / 0.1);
+  --color-scrim: rgb(12 12 11 / 0.92);
+
+  --brand-saldo: #4f46e5;
+  --brand-ordino: #0f766e;
+  --brand-invest-portal: #4f46e5;
+  --brand-pahulja: #0b918e;
+  --brand-oud-andalous: #ffd089;
+  --brand-1vs1: #f6ad55;
+
+  // chapter layer (01 Experience = default)
+  --chapter-accent: var(--color-ink);
+  --chapter-accent-2: var(--color-ink-2);
+  --chapter-bg: var(--color-bg);
+  --chapter-surface: var(--color-surface);
+  --chapter-motif: var(--color-line-soft);
+  --chapter-tint: var(--color-line);
+
+  // fonts
+  --font-mono: 'JetBrains Mono Variable', 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+  --font-sans: 'Inter Variable', 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-serif: 'Instrument Serif', 'Times New Roman', serif;
+  --font-arabic: 'Amiri', 'Noto Naskh Arabic', 'Geeza Pro', serif;
+
+  // scale
+  --space-4: 4px;
+  --space-8: 8px;
+  --space-12: 12px;
+  --space-16: 16px;
+  --space-24: 24px;
+  --space-32: 32px;
+  --space-48: 48px;
+  --space-64: 64px;
+  --space-96: 96px;
+  --space-128: 128px;
+  --space-192: 192px;
+  --radius-browser: 12px;
+  --radius-phone: 56px;
+  --hairline: 1px;
+  --emphasis: 2px;
+  --focus-width: 2px;
+  --focus-offset: 2px;
+  --touch: 44px;
+  --button-l: 52px;
+  --button-m: 44px;
+  --nav-h: 64px;
+
+  // grid
+  --max: 1440px;
+  --columns: 12;
+  --margin: 48px;
+  --gutter: 24px;
+
+  // motion
+  --ease-out: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --dur-reveal: 350ms;
+}
+
+[data-theme='paper'] {
+  color-scheme: light;
+
+  --color-bg: #f2efe8;
+  --color-surface: #fbfaf6;
+  --color-ink: #0e0e0c;
+  --color-ink-2: #3a3a36;
+  --color-muted: #6e6c66;
+  --color-line: #0e0e0c;
+  --color-line-soft: rgb(14 14 12 / 0.14);
+  --color-signal: #ff4f1f;
+  --color-signal-text: #c2330e;
+  --color-on-signal: #0e0e0c;
+  --color-focus: #d93a10;
+  --color-disabled: #a8a59d;
+  --color-schools: #1d5238;
+  --color-schools-rule: rgb(29 82 56 / 0.14);
+  --color-red-pen: #c92a2a;
+  --color-faith-bg: #f2efe8;
+  --color-faith-surface: #fbfaf6;
+  --color-faith-accent: #0e4d3c;
+  --color-faith-gold: #7e6328;
+  --color-faith-gold-fill: #c9a24a;
+  --color-faith-motif: rgb(14 77 60 / 0.12);
+  --color-scrim: rgb(242 239 232 / 0.94);
+
+  --brand-oud-andalous: #1a1a1a;
+  --brand-1vs1: #0d1b2a;
+}
+
+[data-chapter='schools'] {
+  --chapter-accent: var(--color-schools);
+  --chapter-accent-2: var(--color-red-pen);
+  --chapter-motif: var(--color-schools-rule);
+  --chapter-tint: var(--color-schools);
+}
+
+[data-chapter='faith'] {
+  --chapter-accent: var(--color-faith-accent);
+  --chapter-accent-2: var(--color-faith-gold);
+  --chapter-bg: var(--color-faith-bg);
+  --chapter-surface: var(--color-faith-surface);
+  --chapter-motif: var(--color-faith-motif);
+  --chapter-tint: var(--color-faith-gold-fill);
+}
+
+[data-chapter='products'] {
+  --chapter-tint: var(--color-line);
+}
+
+@media (max-width: 1023px) {
+  :root {
+    --margin: 32px;
+    --gutter: 16px;
+    --columns: 8;
+  }
+}
+
+@media (max-width: 639px) {
+  :root {
+    --margin: 20px;
+    --gutter: 16px;
+    --columns: 4;
+  }
+}

@@ -1,0 +1,83 @@
+---
+import { stack, about, contact, person } from '../data/site';
+import { url } from '../lib/url';
+---
+
+<section class="section" id="stack" aria-labelledby="stack-title">
+  <div class="wrap grid-lines">
+    <h2 class="t-h2" id="stack-title" data-reveal>Stack</h2>
+    <dl class="stack">
+      {
+        stack.map((row, i) => (
+          <div class="stack__row" data-reveal style={`--i:${i}`}>
+            <dt class="stack__group">{row.group}</dt>
+            <dd class="stack__items">{row.items}</dd>
+          </div>
+        ))
+      }
+    </dl>
+  </div>
+</section>
+
+<section class="section about" id="about" aria-labelledby="about-title">
+  <div class="wrap grid-lines">
+    <div class="grid12 about__grid">
+      <h2 class="t-h2 about__heading" id="about-title" data-reveal>{about.heading}</h2>
+      <div class="about__body" data-reveal style="--i:1">
+        {about.paragraphs.map((t) => <p class="about__lead">{t}</p>)}
+        <dl class="about__facts">
+          {
+            about.facts.map((f) => (
+              <div>
+                <dt class="t-label">{f.label}</dt>
+                <dd>{f.value}</dd>
+              </div>
+            ))
+          }
+        </dl>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section contact" id="contact" aria-labelledby="contact-title">
+  <div class="wrap grid-lines">
+    <h2 class="t-h2" id="contact-title" data-reveal>{contact.heading}</h2>
+
+    <div class="contact__email-row" data-reveal>
+      <a class="contact__email" href={`mailto:${person.email}`}>{person.email}</a>
+      <button class="btn btn--secondary btn--m" type="button" data-copy={person.email}>Copy email</button>
+    </div>
+
+    <dl class="contact__channels">
+      <div>
+        <dt class="t-label">Phone</dt>
+        <dd><a class="text-link" href={person.phoneHref}>{person.phone}</a></dd>
+      </div>
+      <div>
+        <dt class="t-label">LinkedIn</dt>
+        <dd>
+          <a class="text-link" href={person.links.linkedin} target="_blank" rel="noopener">linkedin.com/in/dzenan-kosuta <span aria-hidden="true">↗</span></a>
+        </dd>
+      </div>
+      <div>
+        <dt class="t-label">GitHub</dt>
+        <dd>
+          <a class="text-link" href={person.links.github} target="_blank" rel="noopener">github.com/dzenankosuta <span aria-hidden="true">↗</span></a>
+        </dd>
+      </div>
+      <div>
+        <dt class="t-label">Instagram</dt>
+        <dd>
+          <a class="text-link" href={person.links.instagram} target="_blank" rel="noopener">@dzenan.kosuta <span aria-hidden="true">↗</span></a>
+        </dd>
+      </div>
+    </dl>
+
+    <div class="contact__cta">
+      <a class="btn btn--primary" href={url(`/${person.cv}`)} download>
+        Download CV <span class="arrow arrow--d" aria-hidden="true">↓</span>
+      </a>
+    </div>
+  </div>
+</section>

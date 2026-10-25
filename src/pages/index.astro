@@ -1,0 +1,63 @@
+---
+import Base from '../layouts/Base.astro';
+import Hero from '../components/Hero.astro';
+import WorkIndex from '../components/WorkIndex.astro';
+import Experience from '../components/Experience.astro';
+import Chapter from '../components/Chapter.astro';
+import StackAboutContact from '../components/StackAboutContact.astro';
+import { person, meta, stack } from '../data/site';
+import { projects } from '../data/projects';
+import { url, projectUrl } from '../lib/url';
+
+const home = new URL(url('/'), Astro.site).href;
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Person',
+    '@id': `${home}#person`,
+    name: person.name,
+    alternateName: 'Dzenan Kosuta',
+    jobTitle: person.roleLong,
+    description: meta.description,
+    url: home,
+    image: new URL(url('/og.png'), Astro.site).href,
+    email: `mailto:${person.email}`,
+    address: { '@type': 'PostalAddress', addressLocality: 'Novi Pazar', addressCountry: 'RS' },
+    worksFor: { '@type': 'Organization', name: person.employer },
+    alumniOf: { '@type': 'CollegeOrUniversity', name: 'State University of Novi Pazar' },
+    knowsAbout: stack.flatMap((s) => s.items.split(', ')).slice(0, 24),
+    sameAs: [person.links.github, person.links.linkedin, person.links.instagram],
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    '@id': `${home}#website`,
+    name: person.name,
+    url: home,
+    inLanguage: 'en',
+    author: { '@id': `${home}#person` },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: 'Projects',
+    itemListElement: projects.map((p, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      url: new URL(projectUrl(p.slug), Astro.site).href,
+      name: p.name,
+    })),
+  },
+];
+---
+
+<Base jsonLd={jsonLd} type="profile">
+  <Hero />
+  <WorkIndex />
+  <Experience />
+  <Chapter chapter="schools" />
+  <Chapter chapter="faith" />
+  <Chapter chapter="products" />
+  <StackAboutContact />
+</Base>

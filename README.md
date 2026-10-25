@@ -1,17 +1,36 @@
-# Dženan Košuta - Portfolio
+# Dženan Košuta — portfolio
 
-Welcome to my GitHub portfolio! My name is Dženan Košuta, and I'm a passionate Software Developer with a keen interest in crafting exceptional web and mobile applications. This repository serves as a showcase of my skills and a glimpse into my journey as a developer.
+Personal portfolio of Dženan Košuta, software engineer (React Native & full-stack): 16 independent products, the company roles behind them, and a case study for every project.
 
-## About Me
+**Live:** https://dzenankosuta.github.io/portfolio/
 
-I specialize in both front-end and back-end development, and I take pride in delivering solutions that are not only functional but also aesthetically pleasing. With a diverse skill set and a commitment to excellence, I approach each project with dedication and creativity.
+## Stack
 
-## What You'll Find
+- [Astro](https://astro.build) 7, static output: one page per project under `/work/<slug>/`
+- SCSS with design tokens exported from the FigCraft design (direction B, Ink / Paper themes)
+- Vanilla TypeScript for progressive enhancements: theme switch, menu, filters, cursor preview, counters, lightbox
+- Self-hosted fonts (Inter, JetBrains Mono, Instrument Serif, Amiri) via Fontsource
+- `astro:assets` for responsive WebP images, `@astrojs/sitemap` for the sitemap
 
-In this repository, you'll discover a curated collection of my coding projects, each designed to demonstrate my expertise and dedication to the craft. These projects encompass a wide range of technologies and showcase my ability to adapt and excel in various domains of software development.
+## Develop
 
-## Get in Touch
+Requires Node ≥ 22.23.4.
 
-I'm always open to collaboration and would love to connect with fellow developers and potential partners. If you have any questions, ideas, or just want to chat, feel free to reach out. You can contact me via email at [dzenan_kosuta@hotmail.com](mailto:dzenan_kosuta@hotmail.com).
+```sh
+npm install
+npm run dev       # http://localhost:4321/portfolio/
+npm run build     # static site in dist/
+npm run preview
+```
 
-Thank you for visiting my portfolio, and I hope you enjoy exploring the work I've crafted. Happy coding!
+## Content
+
+- `src/data/site.ts`: hero, experience, stack, about, contact
+- `src/data/projects.ts`: every project (copy, links, media for cards and case studies)
+- `src/assets/projects/<slug>/`: optimized screenshots, icons and graphics
+- `public/Dzenan-Kosuta-CV.pdf`: the downloadable CV
+
+## Deploy
+
+Every push to `main` builds and deploys to GitHub Pages (`.github/workflows/deploy.yml`).
+For a custom domain, build with `SITE_URL=https://your-domain` and `SITE_BASE=/`, and add a `public/CNAME` file.

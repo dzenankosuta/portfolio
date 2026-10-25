@@ -1,0 +1,85 @@
+---
+import { Image } from 'astro:assets';
+import portrait from '../assets/portrait/me-cutout-mono.webp';
+import { hero, person } from '../data/site';
+import { url } from '../lib/url';
+---
+
+<section class="hero" id="top" aria-labelledby="hero-name">
+  <div class="wrap grid-lines hero__wrap">
+    <p class="hero__eyebrow">{hero.eyebrow}</p>
+    <div class="rule rule--cross hero__r1" aria-hidden="true"></div>
+
+    <h1 class="hero__name" id="hero-name" aria-label={person.name}>
+      <span class="word" data-scramble>{person.firstName}</span>{' '}<span class="word" data-scramble>{person.lastName}</span>
+    </h1>
+
+    <div class="hero__copy">
+      <p class="hero__headline">{hero.headline.map((line) => <span>{line}</span>)}</p>
+      <p class="hero__sub">{hero.subline}</p>
+      <div class="hero__actions">
+        <a class="btn btn--primary" href={url(`/${person.cv}`)} download>
+          Download CV <span class="arrow arrow--d" aria-hidden="true">↓</span>
+        </a>
+        <a class="btn btn--secondary" href="#contact">Get in touch <span class="arrow arrow--r" aria-hidden="true">→</span></a>
+        <span class="hero__links">
+          <a class="btn btn--ghost" href={person.links.github} target="_blank" rel="noopener">GitHub <span class="arrow arrow--ne" aria-hidden="true">↗</span></a>
+          <a class="btn btn--ghost" href={person.links.linkedin} target="_blank" rel="noopener">LinkedIn <span class="arrow arrow--ne" aria-hidden="true">↗</span></a>
+        </span>
+      </div>
+    </div>
+
+    <dl class="hero__meta">
+      <div>
+        <dt class="t-label">Role</dt>
+        <dd>{person.role}<br />(React Native &amp; <span class="nowrap">full-stack</span>)</dd>
+      </div>
+      <div>
+        <dt class="t-label">Based in</dt>
+        <dd>{person.location}</dd>
+      </div>
+      <div>
+        <dt class="t-label">Local time</dt>
+        <dd><span class="live-dot" aria-hidden="true"></span><time data-clock>Novi Pazar</time></dd>
+      </div>
+      <div>
+        <dt class="t-label">Current employer</dt>
+        <dd>{person.employer}</dd>
+      </div>
+    </dl>
+
+    <div class="hero__portrait">
+      <Image
+        src={portrait}
+        alt={`${person.name}, portrait in black and white`}
+        widths={[340, 420, 640, 840, 1200]}
+        sizes="(max-width: 639px) 340px, (max-width: 1023px) 420px, 404px"
+        loading="eager"
+        fetchpriority="high"
+      />
+    </div>
+
+    <ul class="hero__stats">
+      {
+        hero.stats.map((s) => (
+          <li>
+            <span class="hero__stat-value" data-count={s.count} data-suffix={s.suffix ?? ''}>
+              {s.value}
+            </span>
+            <span class="hero__stat-label">{s.label}</span>
+          </li>
+        ))
+      }
+    </ul>
+
+    <div class="rule rule--strong rule--cross hero__r2" aria-hidden="true"></div>
+    <div class="rule rule--cross hero__r3" aria-hidden="true"></div>
+  </div>
+
+  <div class="marquee" aria-label="Technologies">
+    <div class="marquee__track">
+      <ul class="marquee__list">{hero.marquee.map((t) => <li>{t}</li>)}</ul>
+      <ul class="marquee__list" aria-hidden="true">{hero.marquee.map((t) => <li>{t}</li>)}</ul>
+    </div>
+  </div>
+</section>

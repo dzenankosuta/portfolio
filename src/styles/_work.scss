@@ -1,0 +1,694 @@
+// Work index, chapter headers, experience timeline, project cards.
+
+// ── work index
+.work {
+  &__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 12px 24px;
+    margin-bottom: 32px;
+  }
+
+  &__count {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+.index {
+  margin-top: 24px;
+  border-top: 1px solid var(--color-line);
+
+  li {
+    border-bottom: 1px solid var(--color-line-soft);
+  }
+}
+
+.index-row {
+  display: grid;
+  grid-template-columns: repeat(var(--columns), minmax(0, 1fr));
+  column-gap: var(--gutter);
+  align-items: center;
+  min-height: 80px;
+  padding-block: 12px;
+  transition: background-color 160ms var(--ease-out);
+
+  &__idx {
+    grid-column: 1;
+    font: 400 12px/16px var(--font-mono);
+    color: var(--color-muted);
+  }
+
+  &__name {
+    grid-column: 2 / 6;
+    font: 700 28px/32px var(--font-mono);
+    letter-spacing: -0.02em;
+    transition: transform 240ms var(--ease-expo);
+  }
+
+  &__chapter {
+    grid-column: 6 / 8;
+    font: 400 13px/20px var(--font-mono);
+    color: var(--color-ink-2);
+  }
+
+  &__type {
+    grid-column: 8 / 11;
+    font: 400 13px/20px var(--font-mono);
+    color: var(--color-ink-2);
+  }
+
+  &__year {
+    grid-column: 11;
+    font: 400 13px/20px var(--font-mono);
+    color: var(--color-ink-2);
+    white-space: nowrap;
+  }
+
+  &__arrow {
+    grid-column: 12;
+    justify-self: end;
+    margin-right: 8px;
+    font: 400 20px/1 var(--font-mono);
+    transition: transform 240ms var(--ease-expo);
+  }
+
+  &__thumb {
+    display: none;
+  }
+
+  @media (hover: hover) {
+    &:hover {
+      background: var(--color-surface);
+    }
+
+    &:hover &__name {
+      transform: translateX(8px);
+    }
+
+    &:hover &__arrow {
+      transform: translateX(4px);
+      color: var(--color-signal-text);
+    }
+  }
+
+  &:focus-visible {
+    outline-offset: -2px;
+  }
+
+  @media (max-width: 1023px) {
+    &__name {
+      grid-column: 2 / 5;
+      font-size: 22px;
+      line-height: 28px;
+    }
+
+    &__chapter {
+      grid-column: 5 / 6;
+    }
+
+    &__type {
+      grid-column: 6 / 8;
+    }
+
+    &__year {
+      display: none;
+    }
+
+    &__arrow {
+      grid-column: 8;
+    }
+  }
+
+  @media (max-width: 639px) {
+    grid-template-columns: 52px minmax(0, 1fr) auto;
+    column-gap: 14px;
+    min-height: 76px;
+
+    &__thumb {
+      display: block;
+      grid-column: 1;
+      grid-row: 1 / 4;
+      width: 52px;
+      height: 52px;
+      border: 1px solid var(--color-line-soft);
+      object-fit: cover;
+    }
+
+    &__idx {
+      grid-column: 2;
+      grid-row: 1;
+    }
+
+    &__name {
+      grid-column: 2;
+      grid-row: 2;
+      font-size: 20px;
+      line-height: 24px;
+    }
+
+    &__type {
+      grid-column: 2;
+      grid-row: 3;
+      font-size: 12px;
+      line-height: 18px;
+    }
+
+    &__chapter {
+      display: none;
+    }
+
+    &__arrow {
+      grid-column: 3;
+      grid-row: 1 / 4;
+      margin-right: 0;
+    }
+  }
+}
+
+.index li[data-filtered] {
+  display: none;
+}
+
+// cursor-follow preview (desktop, fine pointer)
+.preview {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 40;
+  width: 320px;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  border: 1px solid var(--color-line);
+  background: var(--color-surface);
+  pointer-events: none;
+  opacity: 0;
+  transform: translate3d(var(--x, 0), var(--y, 0), 0) scale(0.92);
+  transition:
+    opacity 180ms var(--ease-out),
+    transform 120ms var(--ease-out);
+
+  &[data-on] {
+    opacity: 1;
+    transform: translate3d(var(--x, 0), var(--y, 0), 0) scale(1);
+  }
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top;
+  }
+
+  @media (hover: none), (pointer: coarse), (max-width: 1023px) {
+    display: none;
+  }
+}
+
+// ── chapter header
+.chapter-head {
+  &__top {
+    align-items: start;
+  }
+
+  &__num {
+    grid-column: 1 / 3;
+    font: 700 160px/0.9 var(--font-mono);
+    letter-spacing: -0.04em;
+    color: var(--chapter-accent);
+  }
+
+  &__text {
+    grid-column: 3 / 11;
+    padding-top: 12px;
+  }
+
+  &__intro {
+    max-width: 30em;
+    margin-top: 16px;
+  }
+
+  &__facts {
+    margin-top: 48px;
+    padding-block: 14px;
+    border-block: 1px solid var(--color-line-soft);
+  }
+
+  @media (max-width: 1023px) {
+    &__num {
+      grid-column: 1 / -1;
+      font-size: 112px;
+    }
+
+    &__text {
+      grid-column: 1 / -1;
+      padding-top: 16px;
+    }
+  }
+
+  @media (max-width: 639px) {
+    &__num {
+      font-size: 72px;
+    }
+
+    &__facts {
+      margin-top: 32px;
+    }
+  }
+}
+
+// ── 01 experience: typographic ledger
+.timeline {
+  margin-top: 48px;
+}
+
+.role {
+  display: grid;
+  grid-template-columns: repeat(var(--columns), minmax(0, 1fr));
+  column-gap: var(--gutter);
+  padding-block: 40px;
+  border-bottom: 1px solid var(--color-line-soft);
+
+  &__period {
+    grid-column: 1 / 3;
+    padding-top: 6px;
+  }
+
+  &__who {
+    grid-column: 3 / 6;
+  }
+
+  &__role {
+    margin-top: 6px;
+  }
+
+  &__what {
+    grid-column: 6 / 11;
+  }
+
+  &__product {
+    font-weight: 500;
+  }
+
+  &__bullets {
+    margin-top: 12px;
+
+    li {
+      position: relative;
+      padding-left: 22px;
+      color: var(--color-ink-2);
+
+      & + li {
+        margin-top: 8px;
+      }
+
+      &::before {
+        content: '—';
+        position: absolute;
+        left: 0;
+        color: var(--color-muted);
+      }
+    }
+  }
+
+  &__meta {
+    grid-column: 11 / 13;
+    padding-top: 6px;
+
+    .text-link {
+      margin-top: 4px;
+      min-height: 32px;
+    }
+  }
+
+  &__products {
+    margin-top: 28px;
+    padding-top: 20px;
+    border-top: 1px solid var(--color-line-soft);
+  }
+
+  &__product-item {
+    margin-top: 18px;
+
+    h4 {
+      font: 700 13px/18px var(--font-mono);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    p {
+      margin-top: 6px;
+      color: var(--color-ink-2);
+    }
+
+    .links {
+      margin-top: 10px;
+    }
+  }
+
+  @media (max-width: 1023px) {
+    &__period,
+    &__who,
+    &__what,
+    &__meta {
+      grid-column: 1 / -1;
+    }
+
+    &__who {
+      margin-top: 8px;
+    }
+
+    &__what {
+      margin-top: 20px;
+    }
+
+    &__meta {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 4px 16px;
+      margin-top: 16px;
+    }
+  }
+}
+
+// ── project cards
+.cards {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--gutter);
+  margin-top: 48px;
+
+  @media (max-width: 1023px) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.card {
+  --tint: var(--chapter-tint);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--color-line-soft);
+  border-top: 2px solid var(--tint);
+  background: var(--chapter-bg);
+  transition: border-color 200ms var(--ease-out);
+
+  &--flagship,
+  &--wide {
+    grid-column: 1 / -1;
+  }
+
+  &--tinted {
+    --tint: var(--tint-ink);
+
+    [data-theme='paper'] & {
+      --tint: var(--tint-paper);
+    }
+  }
+
+  &__media {
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 16px;
+    padding: 32px;
+    background: var(--chapter-surface);
+    border-bottom: 1px solid var(--color-line-soft);
+    overflow: hidden;
+
+    .device {
+      transition: transform 500ms var(--ease-expo);
+    }
+
+    .phone {
+      --w: clamp(120px, 12.5vw, 180px);
+    }
+
+    .browser,
+    .tv {
+      flex: 1 1 0;
+      min-width: 0;
+    }
+
+    .a4 {
+      --w: clamp(140px, 15vw, 230px);
+    }
+
+    .photo {
+      --w: clamp(110px, 10vw, 150px);
+    }
+  }
+
+  @media (hover: hover) {
+    &:hover .card__media .device:nth-child(odd) {
+      transform: translateY(-6px);
+    }
+
+    &:hover .card__media .device:nth-child(even) {
+      transform: translateY(-12px);
+    }
+  }
+
+  &__body {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 28px 32px 32px;
+  }
+
+  &__top {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  &__icon {
+    width: 48px;
+    height: 48px;
+    border: 1px solid var(--color-line-soft);
+    object-fit: cover;
+    flex: none;
+  }
+
+  &__name {
+    font: 600 40px/1.05 var(--font-sans);
+    letter-spacing: -0.02em;
+
+    a {
+      background: linear-gradient(currentColor, currentColor) 0 100% / 0 2px no-repeat;
+      transition: background-size 300ms var(--ease-expo);
+
+      &:hover {
+        background-size: 100% 2px;
+      }
+
+      // whole card is the hit area for the case study
+      &::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        z-index: 1;
+      }
+    }
+  }
+
+  &__arabic {
+    margin-top: -4px;
+    line-height: 1.2;
+  }
+
+  &__tagline {
+    max-width: 32em;
+    font-size: 20px;
+    line-height: 30px;
+  }
+
+  &__meta,
+  &__numbers {
+    font: 400 12px/18px var(--font-mono);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+  }
+
+  &__numbers {
+    text-transform: none;
+    letter-spacing: 0;
+    color: var(--color-ink-2);
+  }
+
+  &__note {
+    position: absolute;
+    top: 12px;
+    right: 16px;
+    z-index: 2;
+    font: 500 11px/16px var(--font-mono);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-red-pen);
+  }
+
+  &__foot {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 8px;
+  }
+
+  // links sit above the card-wide hit area
+  .links,
+  .chips {
+    position: relative;
+    z-index: 2;
+  }
+
+  &__case {
+    font: 700 12px/16px var(--font-mono);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--chapter-accent);
+
+    .arrow {
+      display: inline-block;
+      transition: transform 240ms var(--ease-expo);
+    }
+  }
+
+  @media (hover: hover) {
+    &:hover {
+      border-color: var(--color-line);
+      border-top-color: var(--tint);
+    }
+
+    &:hover .card__case .arrow {
+      transform: translateX(4px);
+    }
+  }
+
+  // flagship: text left, devices right
+  &--flagship {
+    @media (min-width: 1024px) {
+      display: grid;
+      grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
+
+      .card__body {
+        order: -1;
+        justify-content: center;
+        border-right: 1px solid var(--color-line-soft);
+      }
+
+      .card__media {
+        border-bottom: 0;
+        padding: 48px;
+      }
+
+      .card__name {
+        font-size: 56px;
+      }
+    }
+  }
+
+  // mobile: devices become a swipeable rail
+  @media (max-width: 639px) {
+    &__media {
+      justify-content: flex-start;
+      gap: 12px;
+      padding: 24px var(--margin);
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: none;
+      overscroll-behavior-x: contain;
+
+      &::-webkit-scrollbar {
+        display: none;
+      }
+
+      .device {
+        scroll-snap-align: center;
+      }
+
+      .phone {
+        --w: 150px;
+      }
+
+      .browser,
+      .tv {
+        flex: none;
+        --w: 82vw;
+      }
+
+      .a4 {
+        --w: 170px;
+      }
+
+      .photo {
+        --w: 150px;
+      }
+    }
+
+    &__body {
+      padding: 22px 20px 24px;
+    }
+
+    &__name {
+      font-size: 32px;
+    }
+
+    &__tagline {
+      font-size: 18px;
+      line-height: 27px;
+    }
+
+    &__foot {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+}
+
+// rail hint for touch
+.rail-hint {
+  display: none;
+
+  @media (max-width: 639px) {
+    display: block;
+    position: absolute;
+    right: 14px;
+    bottom: 10px;
+    z-index: 2;
+    font: 500 10px/1 var(--font-mono);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+    pointer-events: none;
+  }
+}
+
+// Mektebi's extra gallery strip under the flagship
+.strip {
+  display: flex;
+  align-items: flex-end;
+  gap: 16px;
+  padding: 32px;
+  border: 1px solid var(--color-line-soft);
+  border-top: 0;
+  background: var(--chapter-surface);
+
+  .phone {
+    --w: clamp(120px, 12.5vw, 180px);
+  }
+
+  .wide {
+    flex: 1 1 0;
+    min-width: 0;
+  }
+
+  @media (max-width: 1023px) {
+    display: none;
+  }
+}

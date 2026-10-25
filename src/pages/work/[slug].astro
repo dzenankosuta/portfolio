@@ -1,0 +1,247 @@
+---
+import { getImage } from 'astro:assets';
+import Base from '../../layouts/Base.astro';
+import Device from '../../components/Device.astro';
+import ProjectLinks from '../../components/ProjectLinks.astro';
+import { projects, chapters, type Project } from '../../data/projects';
+import { person } from '../../data/site';
+import { img } from '../../lib/images';
+import { url, projectUrl } from '../../lib/url';
+
+export function getStaticPaths() {
+  return projects.map((project, i) => ({
+    params: { slug: project.slug },
+    props: {
+      project,
+      prev: projects[(i - 1 + projects.length) % projects.length],
+      next: projects[(i + 1) % projects.length],
+    },
+  }));
+}
+
+interface Props {
+  project: Project;
+  prev: Project;
+  next: Project;
+}
+
+const { project: p, prev, next } = Astro.props;
+const chapter = chapters[p.chapter];
+const status = p.status === 'live' ? 'Live' : p.status === 'production' ? 'In production' : null;
+const style = p.tint ? `--tint-ink:${p.tint[0]};--tint-paper:${p.tint[1]}` : undefined;
+
+// Open Graph: the project's widest visual
+const ogMedia = p.gallery.find((m) => m.kind === 'wide') ?? p.gallery.find((m) => m.kind === 'browser') ?? p.card[0];
+const og = await getImage({ src: img(p.slug, ogMedia.image), width: 1200, format: 'jpg', quality: 82 });
+
+// gallery groups
+const phones = p.gallery.filter((m) => m.kind === 'phone');
+// the full-page capture already shows the landing page, so skip its screenshot
+const flats = p.gallery.filter(
+  (m) => m.kind !== 'phone' && !(p.full && m.kind === 'browser' && m.image === 'web-landing'),
+);
+
+// full-page capture: scroll duration proportional to its length
+const fullSrc = p.full ? img(p.slug, p.full.image) : null;
+const view = 560;
+const fullDur = fullSrc ? Math.max(4, Math.round(((fullSrc.height / fullSrc.width) * 880 - view) / 420)) : 0;
+
+// "3 schools" → value "3", label "schools"
+const splitNumber = (n: string) => {
+  const m = n.match(/^([~\d.,+]+)\s+(.*)$/);
+  return m ? { value: m[1], label: m[2] } : { value: null, label: n };
+};
+
+const pageUrl = new URL(projectUrl(p.slug), Astro.site).href;
+const home = new URL(url('/'), Astro.site).href;
+const os = [p.platforms.includes('iOS') && 'iOS', p.platforms.includes('Android') && 'Android', p.platforms.includes('Web') && 'Web', p.platforms.includes('Desktop') && 'Windows'].filter(Boolean).join(', ');
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'SoftwareApplication',
+    name: p.name,
+    description: p.seo,
+    url: p.links.web ?? pageUrl,
+    applicationCategory: p.chapter === 'faith' ? 'LifestyleApplication' : p.chapter === 'schools' ? 'EducationalApplication' : 'BusinessApplication',
+    operatingSystem: os || 'Web',
+    image: new URL(og.src, Astro.site).href,
+    author: { '@type': 'Person', name: person.name, url: home },
+    ...(p.links.ios || p.links.android ? { sameAs: [p.links.ios, p.links.android].filter(Boolean) } : {}),
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Work', item: `${home}#work` },
+      { '@type': 'ListItem', position: 2, name: chapter.title, item: `${home}#${p.chapter}` },
+      { '@type': 'ListItem', position: 3, name: p.name, item: pageUrl },
+    ],
+  },
+];
+---
+
+<Base
+  title={`${p.name} — ${p.tagline} | ${person.name}`}
+  description={p.seo}
+  image={og.src}
+  imageAlt={ogMedia.alt}
+  type="article"
+  jsonLd={jsonLd}
+  chapter={p.chapter}
+  current={p.chapter}
+>
+  <article class="case chapter" data-chapter={p.chapter} style={style}>
+    <div class:list={['wrap grid-lines', p.chapter === 'faith' && 'girih']}>
+      <nav class="case__crumbs t-label" aria-label="Breadcrumb">
+        <a href={`${url('/')}#work`}>Work</a><span aria-hidden="true">/</span>
+        <a href={`${url('/')}#${p.chapter}`}>{chapter.index} {chapter.title}</a><span aria-hidden="true">/</span>
+        <span aria-current="page">{p.name}</span>
+      </nav>
+
+      <header class="grid12 case__head">
+        <div class="case__title-block">
+          <p class="t-label">{p.index}{p.flagship ? ' · Flagship' : ''}</p>
+          <h1 class="case__name" style={`view-transition-name: name-${p.slug}`}>{p.name}</h1>
+          {p.arabic && <p class="t-arabic case__arabic" lang="ar" dir="rtl">{p.arabic}</p>}
+          <p class="t-lead case__tagline">{p.tagline}</p>
+          <div class="case__links">
+            <ProjectLinks links={p.links} name={p.name} long />
+          </div>
+        </div>
+        <dl class="case__meta">
+          <div><dt class="t-label">Type</dt><dd>{p.kind}</dd></div>
+          <div><dt class="t-label">Platforms</dt><dd>{p.platforms.join(', ')}</dd></div>
+          <div><dt class="t-label">Year</dt><dd>{p.year}</dd></div>
+          <div><dt class="t-label">Role</dt><dd>{p.role}</dd></div>
+          {status && <div><dt class="t-label">Status</dt><dd>{status}</dd></div>}
+        </dl>
+      </header>
+
+      <div class="case__hero" data-reveal>
+        {p.card.map((m, i) => <Device slug={p.slug} media={m} eager={i < 2} zoom />)}
+      </div>
+
+      <section class="grid12 case__block" aria-labelledby="overview">
+        <h2 class="t-label case__label" id="overview">Overview</h2>
+        <div class="case__content case__prose">
+          {p.intro.map((t) => <p>{t}</p>)}
+          {p.list && <ul>{p.list.map((t) => <li>{t}</li>)}</ul>}
+          {p.outro && <p>{p.outro}</p>}
+        </div>
+      </section>
+
+      {
+        p.video && (
+          <section class="grid12 case__block" aria-labelledby="in-place">
+            <h2 class="t-label case__label" id="in-place">On the hallway screen</h2>
+            <div class="case__content">
+              <figure class="device tv">
+                <div class="device__screen">
+                  <video src={url(`/${p.video}`)} autoplay muted loop playsinline preload="none" aria-label="The animated background loop of the hallway display" />
+                </div>
+              </figure>
+            </div>
+          </section>
+        )
+      }
+
+      <section class="grid12 case__block" aria-labelledby="features">
+        <h2 class="t-label case__label" id="features">What it does</h2>
+        <ol class="case__content case__features">{p.features.map((f) => <li>{f}</li>)}</ol>
+      </section>
+
+      <section class="grid12 case__block" aria-labelledby="numbers">
+        <h2 class="t-label case__label" id="numbers">In numbers</h2>
+        <ul class="case__content case__numbers">
+          {
+            p.numbers.map((n) => {
+              const { value, label } = splitNumber(n);
+              return (
+                <li>
+                  {value ? <strong>{value}</strong> : <strong style="font-size: 22px; line-height: 1.3; letter-spacing: -0.01em">{label}</strong>}
+                  {value && <span>{label}</span>}
+                </li>
+              );
+            })
+          }
+        </ul>
+      </section>
+
+      <section class="grid12 case__block" aria-labelledby="stack">
+        <h2 class="t-label case__label" id="stack">Stack</h2>
+        <ul class="case__content chips">{p.stack.map((s) => <li class="chip chip--stack">{s}</li>)}</ul>
+      </section>
+
+      <section class="case__block" aria-labelledby="gallery">
+        <div class="grid12">
+          <h2 class="t-label case__label" id="gallery">Gallery</h2>
+          <p class="case__content t-small" style="color: var(--color-muted)">Select any screen to enlarge it.</p>
+        </div>
+        <div class="case__gallery" style="margin-top: 32px">
+          {
+            phones.length > 0 && (
+              <div class="case__rail" tabindex="0" aria-label="Phone screens, scroll sideways">
+                {phones.map((m) => <Device slug={p.slug} media={m} zoom />)}
+              </div>
+            )
+          }
+          {
+            p.full && fullSrc && (
+              <div class="case__full">
+                <div style={`--view:${view}px;--dur:${fullDur}s`}>
+                  <Device slug={p.slug} media={p.full} class="browser--full" sizes="(max-width: 1023px) 92vw, 880px" />
+                </div>
+                <p class="t-label case__hint">
+                  The whole page of {p.links.web ? new URL(p.links.web).host.replace('www.', '') : p.name}. Hover to scroll it{' '}
+                  <span aria-hidden="true">↓</span>
+                </p>
+              </div>
+            )
+          }
+          {flats.length > 0 && <div class="case__grid">{flats.map((m) => <Device slug={p.slug} media={m} zoom />)}</div>}
+        </div>
+      </section>
+
+      <nav class="case__pager" aria-label="More projects">
+        <a href={projectUrl(prev.slug)} rel="prev">
+          <span class="t-label">← Previous · {prev.index}</span>
+          <strong>{prev.name}</strong>
+        </a>
+        <a href={projectUrl(next.slug)} rel="next">
+          <span class="t-label">Next · {next.index} →</span>
+          <strong>{next.name}</strong>
+        </a>
+      </nav>
+    </div>
+  </article>
+
+  <section class="section contact" aria-labelledby="case-contact">
+    <div class="wrap grid-lines">
+      <h2 class="t-h2" id="case-contact">Have a product to build? Let's talk.</h2>
+      <div class="contact__email-row">
+        <a class="contact__email" href={`mailto:${person.email}`}>{person.email}</a>
+        <button class="btn btn--secondary btn--m" type="button" data-copy={person.email}>Copy email</button>
+      </div>
+      <div class="contact__cta links">
+        <a class="btn btn--primary" href={url(`/${person.cv}`)} download>Download CV <span class="arrow arrow--d" aria-hidden="true">↓</span></a>
+        <a class="btn btn--secondary" href={`${url('/')}#work`}>All work <span class="arrow arrow--r" aria-hidden="true">→</span></a>
+      </div>
+    </div>
+  </section>
+
+  <dialog class="lightbox" aria-label="Enlarged screen">
+    <div class="lightbox__bar">
+      <p class="t-label" data-lb-caption></p>
+      <button class="btn btn--icon" type="button" data-lb-close aria-label="Close">
+        <svg class="icon" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 4l12 12M16 4L4 16" stroke="currentColor" stroke-width="2" fill="none"></path></svg>
+      </button>
+    </div>
+    <div class="lightbox__stage"><img alt="" data-lb-img /></div>
+    <div class="lightbox__nav">
+      <button class="btn btn--secondary btn--m" type="button" data-lb-prev aria-label="Previous screen">←</button>
+      <button class="btn btn--secondary btn--m" type="button" data-lb-next aria-label="Next screen">→</button>
+    </div>
+  </dialog>
+</Base>
+

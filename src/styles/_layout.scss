@@ -1,0 +1,133 @@
+// Page grid, B's visible column hairlines, crosshair rules and chapter materials.
+
+.wrap {
+  position: relative;
+  width: 100%;
+  max-width: var(--max);
+  margin-inline: auto;
+  padding-inline: var(--margin);
+}
+
+// one column pitch inside .wrap's content box
+.wrap,
+.grid-lines {
+  --pitch: calc((100% + var(--gutter)) / var(--columns));
+}
+
+// 12 (8 / 4) column hairlines + the last column's right edge
+.grid-lines::before {
+  content: '';
+  position: absolute;
+  inset: 0 var(--margin);
+  pointer-events: none;
+  z-index: 0;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--color-line-soft) 0 1px,
+    transparent 1px calc((100% + var(--gutter)) / var(--columns))
+  );
+  border-right: 1px solid var(--color-line-soft);
+}
+
+.grid-lines > * {
+  position: relative;
+  z-index: 1;
+}
+
+.grid12 {
+  display: grid;
+  grid-template-columns: repeat(var(--columns), minmax(0, 1fr));
+  column-gap: var(--gutter);
+}
+
+// full-width rule with a crosshair on every column line
+.rule {
+  position: relative;
+  height: 1px;
+  background: var(--color-line-soft);
+
+  &--strong {
+    background: var(--color-line);
+  }
+
+  &--cross::after {
+    content: '';
+    position: absolute;
+    inset: -4px 0;
+    background: repeating-linear-gradient(
+      90deg,
+      var(--color-line) 0 1px,
+      transparent 1px calc((100% + var(--gutter)) / var(--columns))
+    );
+    border-right: 1px solid var(--color-line);
+    pointer-events: none;
+  }
+}
+
+.section {
+  position: relative;
+  padding-block: var(--space-128);
+
+  @media (max-width: 1023px) {
+    padding-block: var(--space-96);
+  }
+
+  @media (max-width: 639px) {
+    padding-block: var(--space-64);
+  }
+}
+
+.chapter {
+  background: var(--chapter-bg);
+  transition: background-color 400ms var(--ease-out);
+}
+
+// 02 Schools: ruled paper behind the opener
+.ruled {
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0 31px,
+    var(--color-schools-rule) 31px 32px
+  );
+}
+
+// 03 Faith-tech: the khatam star-and-cross as the chapter's grid (VectorCraft tile)
+.girih {
+  position: relative;
+  isolation: isolate;
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background: var(--chapter-motif);
+    -webkit-mask-image: url('../assets/patterns/girih-tile.svg');
+    mask-image: url('../assets/patterns/girih-tile.svg');
+    -webkit-mask-repeat: repeat;
+    mask-repeat: repeat;
+    -webkit-mask-position: var(--margin) 0;
+    mask-position: var(--margin) 0;
+    -webkit-mask-size: calc((100% - 2 * var(--margin) + var(--gutter)) / var(--columns) * 2) auto;
+    mask-size: calc((100% - 2 * var(--margin) + var(--gutter)) / var(--columns) * 2) auto;
+  }
+}
+
+// small shared bits
+.label-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 10px;
+}
+
+.dot-sep > * + *::before {
+  content: '·';
+  margin-right: 10px;
+  color: var(--color-muted);
+}
+
+.stack-y > * + * {
+  margin-top: var(--gap, var(--space-16));
+}

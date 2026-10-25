@@ -1,0 +1,18 @@
+---
+import Base from '../layouts/Base.astro';
+import { url } from '../lib/url';
+---
+
+<Base title="Not found — Dženan Košuta" description="This page doesn't exist. Head back to the work.">
+  <section class="section">
+    <div class="wrap grid-lines notfound">
+      <p class="t-label">Error · page not found</p>
+      <p class="notfound__code" aria-hidden="true">404</p>
+      <h1 class="t-h2">This page was never shipped.</h1>
+      <div class="links">
+        <a class="btn btn--primary" href={url('/')}>Back home <span class="arrow arrow--r" aria-hidden="true">→</span></a>
+        <a class="btn btn--secondary" href={`${url('/')}#work`}>See the work</a>
+      </div>
+    </div>
+  </section>
+</Base>

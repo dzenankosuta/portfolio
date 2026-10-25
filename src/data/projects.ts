@@ -1,0 +1,817 @@
+export type Chapter = 'schools' | 'faith' | 'products';
+export type Platform = 'iOS' | 'Android' | 'Web' | 'Desktop' | 'Hardware';
+export type DeviceKind = 'phone' | 'browser' | 'tv' | 'a4' | 'photo' | 'wide';
+
+export interface Media {
+  kind: DeviceKind;
+  /** file stem in src/assets/projects/<slug>/ */
+  image: string;
+  alt: string;
+  /** address shown in the browser frame's toolbar */
+  url?: string;
+  caption?: string;
+}
+
+export interface ProjectLinks {
+  web?: string;
+  demo?: string;
+  ios?: string;
+  android?: string;
+  instagram?: string;
+}
+
+export interface Project {
+  slug: string;
+  chapter: Chapter;
+  index: string;
+  flagship?: boolean;
+  /** card spans the full row on the home page */
+  wide?: boolean;
+  name: string;
+  arabic?: string;
+  tagline: string;
+  /** short line for the work index */
+  type: string;
+  /** mono meta line on cards and case studies */
+  kind: string;
+  platforms: Platform[];
+  year: string;
+  role: string;
+  status?: 'live' | 'production';
+  intro: string[];
+  list?: string[];
+  outro?: string;
+  features: string[];
+  stack: string[];
+  numbers: string[];
+  links: ProjectLinks;
+  /** product brand tint: [ink mode, paper mode] */
+  tint?: [string, string];
+  card: Media[];
+  gallery: Media[];
+  /** full-page capture shown in a scrolling browser frame */
+  full?: Media;
+  video?: string;
+  note?: string;
+  seo: string;
+}
+
+export const chapters: Record<Chapter, { index: string; title: string; label: string }> = {
+  schools: { index: '02', title: 'Systems for schools', label: 'Schools' },
+  faith: { index: '03', title: 'Faith-tech', label: 'Faith-tech' },
+  products: { index: '04', title: 'Products & clients', label: 'Products' },
+};
+
+export const projects: Project[] = [
+  // ───────────────────────────── 02 · Systems for schools
+  {
+    slug: 'eskolar',
+    chapter: 'schools',
+    index: '02.1',
+    flagship: true,
+    name: 'eSkolar',
+    tagline: 'The national e-gradebook runs the students. eSkolar runs the school.',
+    type: 'Multi-tenant SaaS · Web',
+    kind: 'Multi-tenant SaaS · Web',
+    platforms: ['Web'],
+    year: '2026',
+    role: 'Sole developer',
+    status: 'production',
+    intro: [
+      "eSkolar is a multi-tenant school information system that complements Serbia's national e-gradebook. It covers everything around the classroom: staff dossiers, contracts and mandates, sick leave, academic structure, part-time students and extraordinary exam periods.",
+      'Schools onboard through a four-step wizard and staff work in role-based dashboards. Students register for exams on a public portal and pay with an NBS IPS QR slip, and their registrations stream live into the admin.',
+      'It runs as one deployment on one database, with strict tenant isolation through PostgreSQL row-level security. Used by 3 schools.',
+    ],
+    features: [
+      'One deployment, one database — tenant isolation with PostgreSQL row-level security',
+      '8 roles with a per-school permission matrix edited in the UI',
+      'Staff dossiers, contracts and sick leave with automatic expiry reminders (cron + email + live in-app bell)',
+      'Exam periods with a public portal, QR link and IPS QR payment slip; live registrations in the admin',
+      'Excel/CSV bulk import that understands Serbian or English column headers',
+      'Audit logging via database triggers',
+      'Four languages: Serbian Latin & Cyrillic, English, Bosnian',
+    ],
+    stack: ['Next.js 16', 'React 19', 'TypeScript', 'Supabase', 'PostgreSQL RLS', 'Realtime', 'TanStack Query & Table', 'Resend', 'Turborepo'],
+    numbers: ['3 schools', '8 roles', '37 tables', '4 languages'],
+    links: { web: 'https://www.eskolar.app' },
+    card: [
+      { kind: 'browser', image: 'web-landing', url: 'eskolar.app', alt: 'eSkolar landing page: “The e-gradebook runs the students, eSkolar runs the school”, with a dashboard preview' },
+      { kind: 'browser', image: 'web-brand-board', url: 'eskolar.app', alt: 'eSkolar brand board with logo concepts in indigo' },
+    ],
+    gallery: [
+      { kind: 'browser', image: 'web-landing', url: 'eskolar.app', alt: 'eSkolar landing page hero with a dashboard preview' },
+      { kind: 'browser', image: 'web-brand-board', url: 'eskolar.app', alt: 'eSkolar brand board: logo concepts, colours and typography' },
+      { kind: 'phone', image: 'mobile-landing', alt: 'eSkolar landing page on a phone' },
+    ],
+    full: { kind: 'browser', image: 'full-landing', url: 'eskolar.app', alt: 'The full eSkolar landing page, scrolling' },
+    seo: 'eSkolar is a multi-tenant school information system for Serbian schools: staff dossiers, contracts, exam periods and a public exam portal with IPS QR payments. Used by 3 schools.',
+  },
+  {
+    slug: 'cetrdesetka',
+    chapter: 'schools',
+    index: '02.2',
+    name: 'Četrdesetka',
+    tagline: "Every teacher's 40-hour work-week decision — calculated, approved and printed.",
+    type: 'Web app',
+    kind: 'Web app',
+    platforms: ['Web'],
+    year: '2026',
+    role: 'Sole developer',
+    status: 'production',
+    intro: [
+      'Every Serbian secondary school must issue each teacher a formal decision on how their 40-hour week is structured, and it has traditionally meant weeks of spreadsheets and retyping. Četrdesetka turns it into a guided flow.',
+      'Teachers fill in a seven-step wizard with a live hour budget, and a rules engine tied to the official regulation does the math. The director then reviews, corrects and approves.',
+      'The output is an official, signature-ready PDF in Cyrillic or Latin with the school letterhead and automatic registry numbers, plus a combined PDF and an Excel export for the whole staff.',
+    ],
+    features: [
+      'Rules engine with norms stored as data, tied to articles of the regulation',
+      '7-step teacher wizard with a live hour budget — works on a phone',
+      'Director dashboard: review, correct, approve all in one click',
+      'Official PDF in Cyrillic or Latin with letterhead and automatic registry numbers',
+      'Imports from national exports; combined PDF and Excel export',
+      'Passwordless magic-link login',
+      'Mentor decisions with automatic Serbian grammatical case; help on every page',
+    ],
+    stack: ['Next.js 16', 'React 19', 'Supabase', '@react-pdf/renderer', 'pdf-lib', 'exceljs', 'Vitest'],
+    numbers: ['2 schools', '114 teachers', '112 decisions approved for 2026/27', '~377 automated tests'],
+    links: { web: 'https://cetrdesetka.vercel.app' },
+    card: [
+      { kind: 'browser', image: 'shot-dashboard', url: 'cetrdesetka.vercel.app', alt: 'Četrdesetka director dashboard with totals for submitted and approved decisions and the staff table' },
+      { kind: 'a4', image: 'doc-decision-top', alt: 'The official decision document, printed in Cyrillic with the school letterhead' },
+    ],
+    gallery: [
+      { kind: 'browser', image: 'shot-dashboard', url: 'cetrdesetka.vercel.app', alt: 'Director dashboard: totals, statuses and the staff table' },
+      { kind: 'a4', image: 'doc-decision-top', alt: 'Official decision, first page, Cyrillic' },
+      { kind: 'a4', image: 'doc-decision-bottom', alt: 'Official decision, signature block' },
+      { kind: 'photo', image: 'shot-budget', alt: 'Live hour budget: direct work, other work and total out of 40' },
+      { kind: 'browser', image: 'shot-detail', url: 'cetrdesetka.vercel.app', alt: 'A teacher’s workload items with manual corrections' },
+      { kind: 'browser', image: 'shot-norms', url: 'cetrdesetka.vercel.app', alt: 'Norms catalogue tied to articles of the regulation' },
+      { kind: 'browser', image: 'shot-teaching-plan', url: 'cetrdesetka.vercel.app', alt: 'Teaching plan per class section' },
+      { kind: 'browser', image: 'shot-mentors', url: 'cetrdesetka.vercel.app', alt: 'Mentor decisions for trainee teachers' },
+      { kind: 'browser', image: 'shot-help', url: 'cetrdesetka.vercel.app', alt: 'Contextual help panel on the teachers page' },
+      { kind: 'phone', image: 'mobile-login', alt: 'Passwordless login on a phone' },
+    ],
+    seo: 'Četrdesetka generates the legally required 40-hour work-week decisions for a whole school staff: a teacher wizard, a rules engine, director approval and official PDFs in Cyrillic or Latin.',
+  },
+  {
+    slug: 'zbornica',
+    chapter: 'schools',
+    index: '02.3',
+    name: 'Zbornica',
+    tagline: 'Plans are never retyped.',
+    type: 'Web app (PWA)',
+    kind: 'Web app (PWA)',
+    platforms: ['Web'],
+    year: '2026',
+    role: 'Sole developer',
+    status: 'production',
+    intro: [
+      "Zbornica is a teacher's digital assistant. A teacher enters a subject once, and Zbornica uses the official school calendar to generate the annual plan, the monthly operational plans and the lesson preparations. It keeps all of them in sync when the schedule shifts.",
+      'Around that core it adds:',
+    ],
+    list: [
+      'knowledge tests delivered on paper or digitally by code or QR, with automatic scoring',
+      'a formative-assessment notebook',
+      "the teacher's professional portfolio",
+      'share links for the school pedagogue',
+    ],
+    outro: "Everything exports into the ministry's own Word templates. A copy mode turns moving data into the national e-gradebook into one click per cell. Optional AI drafts plans, tests and preparations from photos or documents, always as a draft the teacher reviews.",
+    features: [
+      'One entry → annual plan, operational plans, lesson preparations',
+      'Lesson reflow that keeps every document in sync',
+      'Tests on paper or digital (code / QR), automatic scoring, a “red pen” correction view',
+      "Export to the ministry's Word templates — Cyrillic, Latin or Bosnian",
+      'Copy mode for the national e-gradebook',
+      'AI drafts (Gemini) — always reviewed by the teacher',
+    ],
+    stack: ['Next.js 15', 'React 19', 'Supabase', 'docxtemplater', 'KaTeX', 'Gemini API'],
+    numbers: ['42 tables', '20 official Word template variants', '14 video tutorials'],
+    links: { web: 'https://zbornica.rs' },
+    note: '“red pen” correction view',
+    card: [
+      { kind: 'browser', image: 'shot-copy-mode', url: 'zbornica.rs', alt: 'Zbornica operational plan in copy mode, ready to paste into the e-gradebook' },
+      { kind: 'browser', image: 'shot-red-pen', url: 'zbornica.rs', alt: 'A graded test in the red-pen correction view' },
+    ],
+    gallery: [
+      { kind: 'browser', image: 'web-landing', url: 'zbornica.rs', alt: 'Zbornica landing page: “Plans are never retyped”' },
+      { kind: 'browser', image: 'shot-copy-mode', url: 'zbornica.rs', alt: 'Operational plan in copy mode' },
+      { kind: 'browser', image: 'shot-red-pen', url: 'zbornica.rs', alt: 'Red-pen correction view of a test' },
+      { kind: 'browser', image: 'shot-digital-test', url: 'zbornica.rs', alt: 'Digital test delivered by code and QR' },
+      { kind: 'browser', image: 'shot-annual-plan', url: 'zbornica.rs', alt: 'Annual plan distributed across months' },
+      { kind: 'browser', image: 'shot-preparation', url: 'zbornica.rs', alt: 'Lesson preparation pre-filled from the plan' },
+      { kind: 'browser', image: 'shot-notebook', url: 'zbornica.rs', alt: 'Formative-assessment notebook' },
+      { kind: 'browser', image: 'shot-export', url: 'zbornica.rs', alt: 'Export dialog: official Word template in Cyrillic' },
+      { kind: 'browser', image: 'shot-ai', url: 'zbornica.rs', alt: 'AI menu for drafting plans and tests' },
+      { kind: 'phone', image: 'mobile-landing', alt: 'Zbornica on a phone' },
+    ],
+    full: { kind: 'browser', image: 'full-landing', url: 'zbornica.rs', alt: 'The full Zbornica landing page, scrolling' },
+    seo: 'Zbornica is a digital assistant for Serbian teachers: annual and operational plans, lesson preparations, tests with QR delivery and exports into the official Word templates.',
+  },
+  {
+    slug: 'educycle',
+    chapter: 'schools',
+    index: '02.4',
+    wide: true,
+    name: 'EduCycle',
+    tagline: 'A smart school bell and a live hallway screen.',
+    type: 'Hardware + software · Electron / React',
+    kind: 'Hardware + software · Electron / React / Firebase',
+    platforms: ['Hardware', 'Desktop', 'Web'],
+    year: '2024 – 2026',
+    role: 'Lead developer',
+    status: 'production',
+    intro: [
+      "EduCycle rings a school's existing bell automatically through a USB relay. It also turns a hallway TV into a live information screen with the current lesson or break, a countdown, the next lesson, shift schedules, news and media.",
+      'Staff edit timetables and news remotely from a password-protected admin panel, and the changes reach the screen in real time. It started as an Electron kiosk app with native serial-port control and grew into a browser-based React display that drives the relay over the Web Serial API.',
+      'It has rung daily since December 2024 in two schools in Novi Pazar: 30 bells a day across two shifts.',
+    ],
+    features: [
+      'USB relay bell control — native serial port, then Web Serial with auto-reconnect',
+      'Two-shift schedule logic with network time and offline fallback',
+      'News ticker, image and YouTube carousel',
+      'Remote admin panel, real-time updates',
+      'Per-school branding',
+    ],
+    stack: ['Electron', 'Express', 'serialport', 'React 19', 'Vite', 'Framer Motion', 'Web Serial API', 'Firebase', 'Cloudflare Workers'],
+    numbers: ['2 schools', '30 bells / day', 'since Dec 2024'],
+    links: {},
+    card: [
+      { kind: 'tv', image: 'tv-technical-school', alt: 'Hallway screen of a technical school: clock, short break countdown and news ticker' },
+      { kind: 'tv', image: 'tv-hospitality-school', alt: 'Hallway screen of a hospitality school with the shift schedule' },
+      { kind: 'photo', image: 'shot-relay-settings', alt: 'Relay settings: serial port, baud rate and bell duration' },
+    ],
+    gallery: [
+      { kind: 'tv', image: 'tv-technical-school', alt: 'Hallway screen, technical school' },
+      { kind: 'tv', image: 'tv-hospitality-school', alt: 'Hallway screen, hospitality school' },
+      { kind: 'browser', image: 'shot-admin-schedule', url: 'admin panel', alt: 'Admin panel: editing the first-shift timetable' },
+      { kind: 'browser', image: 'shot-admin-news', url: 'admin panel', alt: 'Admin panel: adding news for the ticker' },
+      { kind: 'photo', image: 'shot-relay-settings', alt: 'Relay settings panel' },
+    ],
+    video: 'media/educycle-loop.mp4',
+    seo: 'EduCycle rings a school’s bell automatically through a USB relay and turns a hallway TV into a live schedule screen. Running daily in two schools in Novi Pazar since December 2024.',
+  },
+
+  // ───────────────────────────── 03 · Faith-tech
+  {
+    slug: 'mektebi',
+    chapter: 'faith',
+    index: '03.1',
+    flagship: true,
+    name: 'Mektebi',
+    arabic: 'مكتب',
+    tagline: 'Calm administration for Quran schools — schedule, attendance and fees in one place.',
+    type: 'Multi-tenant SaaS · Web + iOS + Android',
+    kind: 'Multi-tenant SaaS · Web + iOS + Android',
+    platforms: ['Web', 'iOS', 'Android'],
+    year: '2026',
+    role: 'Sole developer',
+    status: 'live',
+    intro: [
+      'Mektebi is a SaaS for mektebs, the Quran schools for children. Every school gets its own subdomain (or custom domain) and role-based spaces for the school admin, the hafizes and the students.',
+      'Hafizes manage weekly schedules and can move, cancel or add classes, and families get automatic email notices. Students announce absences in advance. Membership fees are tracked per group in four currencies with daily exchange rates and automatic reminders.',
+      'Families join through invitation emails or QR enrollment links, and the native iOS and Android apps mirror everything with push notifications. Used by 5 schools.',
+    ],
+    features: [
+      'A subdomain (or custom domain) per school',
+      'Roles: global admin, school admin, hafiz, student',
+      'Schedules with one-off changes and automatic notices',
+      'Advance absence notices and attendance stats',
+      'Fees in EUR, RSD, BAM or USD with automatic reminders',
+      'Invitations and QR enrollment links',
+      'ICS calendar feed per group · push notifications',
+    ],
+    stack: ['Next.js 15', 'Supabase', 'Drizzle ORM', 'Resend + react-email', 'Expo SDK 56', 'React Native', 'NativeWind', 'EAS'],
+    numbers: ['5 schools', '4 roles', '4 currencies'],
+    links: {
+      web: 'https://mektebi.online',
+      ios: 'https://apps.apple.com/app/id6782628223',
+      android: 'https://play.google.com/store/apps/details?id=online.mektebi.app',
+    },
+    card: [
+      { kind: 'phone', image: 'phone-01', alt: 'Mektebi app: your next class at a glance' },
+      { kind: 'phone', image: 'phone-02', alt: 'Mektebi app: the weekly schedule' },
+      { kind: 'browser', image: 'web-landing', url: 'mektebi.online', alt: 'Mektebi landing page: administration of Quran schools, simply' },
+    ],
+    gallery: [
+      { kind: 'phone', image: 'phone-01', alt: 'Next class at a glance' },
+      { kind: 'phone', image: 'phone-02', alt: 'Weekly schedule' },
+      { kind: 'phone', image: 'phone-03', alt: 'Membership fees, always transparent' },
+      { kind: 'phone', image: 'phone-04', alt: 'Announce an absence in a few seconds' },
+      { kind: 'phone', image: 'phone-05', alt: 'Your data under your control: settings' },
+      { kind: 'browser', image: 'web-landing', url: 'mektebi.online', alt: 'Mektebi landing page' },
+      { kind: 'wide', image: 'feature', alt: 'Mektebi feature graphic: calm management of the mekteb' },
+    ],
+    full: { kind: 'browser', image: 'full-landing', url: 'mektebi.online', alt: 'The full Mektebi landing page, scrolling' },
+    seo: 'Mektebi is a multi-tenant SaaS for Quran schools: schedules, attendance and membership fees, with a subdomain per school and native iOS and Android apps. Used by 5 schools.',
+  },
+  {
+    slug: 'quran-pomodoro',
+    chapter: 'faith',
+    index: '03.2',
+    name: 'Quran Pomodoro',
+    arabic: 'حفظ',
+    tagline: 'Systematic Quran memorization, one pomodoro at a time.',
+    type: 'Web + iOS + Android (monorepo)',
+    kind: 'Web + iOS + Android (monorepo)',
+    platforms: ['Web', 'iOS', 'Android'],
+    year: '2026',
+    role: 'Sole developer',
+    status: 'live',
+    intro: [
+      'Quran Pomodoro is a hifz system for people memorizing the Quran. Every day it builds a personal plan of focused pomodoro blocks:',
+    ],
+    list: [
+      'new memorization, with 25–35 repetitions per line (tikrār)',
+      'consolidation',
+      'focus on weak pages',
+      "revision of old pages (murāja'ah)",
+    ],
+    outro: "Spaced repetition runs across all 604 pages of the mushaf. Progress, ratings and reminders sync across web and mobile through one backend, and push reminders are scheduled cost-efficiently with pg_cron. It's available in 16 languages with full right-to-left support.",
+    features: [
+      'Daily plan generated from your real progress',
+      'Pomodoro timer with tikrār counter and strong / medium / weak rating',
+      '604-page mushaf grid with a status per page · heatmap stats',
+      'Push on mobile, Web Push in the browser',
+      'Email, magic link, Google and Apple sign-in · 16 languages',
+    ],
+    stack: ['Next.js 16', 'Expo SDK 57', 'Supabase', 'Edge Functions', 'pg_cron', 'Turborepo + pnpm', 'shadcn/ui', 'NativeWind'],
+    numbers: ['604 pages', '16 languages'],
+    links: {
+      web: 'https://www.quranpomodoro.online',
+      ios: 'https://apps.apple.com/app/id6782597092',
+      android: 'https://play.google.com/store/apps/details?id=com.kosuta.quranpomodoro',
+    },
+    card: [
+      { kind: 'phone', image: 'phone-01', alt: 'Quran Pomodoro: today’s plan, written for you' },
+      { kind: 'phone', image: 'phone-02', alt: 'Quran Pomodoro: a 30-minute focus session' },
+      { kind: 'phone', image: 'phone-03', alt: 'Quran Pomodoro: all 604 pages tracked' },
+    ],
+    gallery: [
+      { kind: 'phone', image: 'phone-01', alt: 'Today’s plan' },
+      { kind: 'phone', image: 'phone-02', alt: 'Focus session with tikrār' },
+      { kind: 'phone', image: 'phone-03', alt: '604 pages tracked' },
+      { kind: 'phone', image: 'phone-04', alt: 'Five page statuses, line by line' },
+      { kind: 'phone', image: 'phone-05', alt: 'Watch your hifz grow: stats and streaks' },
+      { kind: 'phone', image: 'phone-06', alt: 'Tuned to your routine: reminders and settings' },
+      { kind: 'browser', image: 'web-landing', url: 'quranpomodoro.online', alt: 'Quran Pomodoro web app landing page' },
+      { kind: 'wide', image: 'feature', alt: 'Quran Pomodoro feature graphic' },
+    ],
+    full: { kind: 'browser', image: 'full-landing', url: 'quranpomodoro.online', alt: 'The full Quran Pomodoro landing page, scrolling' },
+    seo: 'Quran Pomodoro is a hifz system for memorizing the Quran with daily pomodoro plans and spaced repetition across all 604 pages. Web, iOS and Android, 16 languages.',
+  },
+  {
+    slug: 'noorani-qaida',
+    chapter: 'faith',
+    index: '03.3',
+    name: 'Noorani Qaida',
+    arabic: 'القاعدة النورانية',
+    tagline: 'Learn to read the Quran. Beautifully.',
+    type: 'iOS + Android + website',
+    kind: 'iOS + Android + website',
+    platforms: ['iOS', 'Android', 'Web'],
+    year: '2026',
+    role: 'Sole developer & designer',
+    status: 'live',
+    intro: [
+      'Noorani Qaida is a modern take on the classic primer for learning to read Quranic Arabic. It has 23 lessons with 759 practice items: 17 lessons follow the book page by page, and 6 are bonus tajweed lessons.',
+      'A letter grid shows articulation-point diagrams. Tajweed color-coding is rendered with Skia, so colored letters still join correctly. Learners get progress tracking, drills and two hand-crafted palettes in light and dark.',
+      'The companion website is built with Next.js in 14 languages with right-to-left support. It presents the app, hosts the press kit and sends every visitor to the right store through a smart download link.',
+    ],
+    features: [
+      '23 lessons, 759 practice items',
+      'Articulation-point diagrams and letter characteristics',
+      'Tajweed colors that keep Arabic letters joined (Skia)',
+      'Drills, progress, “continue lesson”',
+      'Website in 14 languages with a smart store link',
+    ],
+    stack: ['Expo SDK 56', 'React Native Skia', 'Reanimated', 'MMKV', 'NativeWind', 'Next.js 16', 'next-intl', 'Vercel'],
+    numbers: ['23 lessons', '759 practice items', '14 languages'],
+    links: {
+      web: 'https://www.nooraniqaida.online',
+      ios: 'https://apps.apple.com/app/id6782132760',
+      android: 'https://play.google.com/store/apps/details?id=com.kosuta.nooraniqaida',
+    },
+    card: [
+      { kind: 'phone', image: 'phone-01', alt: 'Noorani Qaida onboarding: learn to read the Quran' },
+      { kind: 'phone', image: 'phone-02', alt: 'Noorani Qaida onboarding: listen and repeat' },
+      { kind: 'phone', image: 'phone-03', alt: 'Noorani Qaida onboarding: a few minutes a day is enough' },
+    ],
+    gallery: [
+      ...['Onboarding: learn to read the Quran', 'Onboarding: listen and repeat', 'Onboarding: a few minutes a day', 'Lesson 11, Qalqalah: continue where you left off', 'All 29 letters, one by one', 'A letter with its articulation point', 'Progress: streaks and lessons mastered', 'Two themes: Classic or Midnight'].map(
+        (alt, i) => ({ kind: 'phone' as const, image: `phone-0${i + 1}`, alt }),
+      ),
+      { kind: 'browser', image: 'web-landing', url: 'nooraniqaida.online', alt: 'Noorani Qaida website' },
+      { kind: 'wide', image: 'feature', alt: 'Noorani Qaida feature graphic' },
+    ],
+    full: { kind: 'browser', image: 'full-landing', url: 'nooraniqaida.online', alt: 'The full Noorani Qaida website, scrolling' },
+    seo: 'Noorani Qaida is an iOS and Android app for learning to read Quranic Arabic: 23 lessons, 759 practice items and tajweed colors rendered with Skia, plus a website in 14 languages.',
+  },
+  {
+    slug: 'nawaya',
+    chapter: 'faith',
+    index: '03.4',
+    name: 'Nawaya',
+    arabic: 'نوايا',
+    tagline: 'Intend first — a reminder to set your intention before everything you do.',
+    type: 'iOS + Android with widgets',
+    kind: 'iOS + Android with widgets',
+    platforms: ['iOS', 'Android'],
+    year: '2026',
+    role: 'Sole developer & designer',
+    status: 'live',
+    intro: [
+      'Nawaya helps Muslims make a niyyah, a conscious intention, before the things they do every day: work, study, training, family and sleep. Users add their daily obligations from 33 templates and choose when to be reminded. A gentle, actionable notification then arrives before each one.',
+      'The Today screen shows the Hijri date, a live countdown to the next reminder and a daily Quran reflection. Prayer times are built in, either worldwide or from the official Vaktija.',
+      'The app is offline-first and keeps data on the phone. It supports 10 languages with right-to-left layout and has home-screen widgets on iOS and Android. Version 1.0 shipped three days after the first commit.',
+    ],
+    features: [
+      '33 templates in 13 categories, a different time per weekday',
+      'Done / Snooze notifications before each activity',
+      'Today: Hijri date, countdown, daily reflection',
+      'Prayer times + Ramadan reminders',
+      'Widgets on iOS and Android · share an intention as an image',
+      '4 palettes, light & dark · 10 languages with RTL',
+    ],
+    stack: ['Expo SDK 57', 'NativeWind', 'Zustand + MMKV', 'Notifee', 'WidgetKit', 'Android widgets', 'adhan', 'Jest + Maestro'],
+    numbers: ['33 templates in 13 categories', '10 languages'],
+    links: {
+      ios: 'https://apps.apple.com/app/id6816261039',
+      android: 'https://play.google.com/store/apps/details?id=com.kosuta.nawaya',
+    },
+    card: [
+      { kind: 'phone', image: 'phone-01', alt: 'Nawaya Today screen: next reminder in 28 minutes and the day’s timeline' },
+      { kind: 'phone', image: 'phone-02', alt: 'Nawaya: daily Quran reflection with Arabic and translation' },
+      { kind: 'phone', image: 'phone-03', alt: 'Nawaya Today screen in the dark Layl palette' },
+    ],
+    gallery: [
+      { kind: 'phone', image: 'phone-01', alt: 'Today screen' },
+      { kind: 'phone', image: 'phone-02', alt: 'Daily reflection' },
+      { kind: 'phone', image: 'phone-03', alt: 'Today in the Layl palette' },
+      { kind: 'phone', image: 'phone-04', alt: 'Obligations' },
+      { kind: 'phone', image: 'phone-05', alt: 'Prayer times' },
+      { kind: 'phone', image: 'phone-06', alt: 'Share an intention as an image' },
+      { kind: 'phone', image: 'phone-07', alt: 'Today in the Sahara palette' },
+      { kind: 'wide', image: 'feature', alt: 'Nawaya feature graphic: intend first' },
+    ],
+    seo: 'Nawaya reminds you to set your intention (niyyah) before every daily activity: reminders, prayer times, a daily Quran reflection and home-screen widgets. iOS and Android, 10 languages.',
+  },
+  {
+    slug: 'qibla',
+    chapter: 'faith',
+    index: '03.5',
+    name: 'Qibla & Salah',
+    arabic: 'القبلة',
+    tagline: 'Face the Qibla. Pray on time. All offline.',
+    type: 'iOS + Android with widgets',
+    kind: 'iOS + Android with widgets',
+    platforms: ['iOS', 'Android'],
+    year: '2026',
+    role: 'Sole developer & designer',
+    status: 'live',
+    intro: ['Qibla & Salah is a precise Qibla compass and prayer-times app.'],
+    list: [
+      'Compass. It computes the great-circle bearing to the Kaaba, smooths the heading and supports true or magnetic north. Haptics speed up as you approach the Qibla, then confirm alignment with a single tap.',
+      'Prayer times. They come from 13 calculation methods worldwide or the official Balkan Vaktija for 118 places, with live countdowns, reminders and home-screen widgets, including lock-screen widgets on iOS and native widgets on Android.',
+    ],
+    outro: 'It has four themes, supports 14 languages and works fully offline.',
+    features: [
+      'Great-circle bearing, smoothed heading, true / magnetic north',
+      'Haptic guidance and calibration hints',
+      'Prayer times for any date with live countdown',
+      'iOS widgets in 6 sizes + 2 native Android widgets',
+      '4 themes, 4 text sizes, 14 languages with RTL',
+    ],
+    stack: ['Expo SDK 57', 'Reanimated', 'expo-sensors', 'expo-location', 'expo-widgets', 'Kotlin native modules', 'adhan'],
+    numbers: ['13 calculation methods', '118 Vaktija places', '14 languages'],
+    links: {
+      ios: 'https://apps.apple.com/app/id6790126803',
+      android: 'https://play.google.com/store/apps/details?id=com.kosuta.qibla',
+    },
+    card: [
+      { kind: 'phone', image: 'phone-01', alt: 'Qibla & Salah: the live compass pointing to the Qibla' },
+      { kind: 'phone', image: 'phone-02', alt: 'Qibla & Salah: four hand-crafted themes' },
+      { kind: 'phone', image: 'phone-03', alt: 'Qibla & Salah: prayer times with the next prayer highlighted' },
+    ],
+    gallery: [
+      ...['Always face the Qibla: the live compass', 'Four themes: Midnight, Sand, Emerald, Mono', 'Never miss a prayer: today’s prayer times', 'Plan around every prayer: any day, any date', 'A simple figure-8 calibration', 'Pray in your language: 14 languages', 'Reliable anywhere: works offline'].map(
+        (alt, i) => ({ kind: 'phone' as const, image: `phone-0${i + 1}`, alt }),
+      ),
+      { kind: 'wide', image: 'feature', alt: 'Qibla & Salah feature graphic' },
+    ],
+    seo: 'Qibla & Salah is a precise Qibla compass with haptic guidance and prayer times from 13 methods or the official Balkan Vaktija, with widgets. iOS and Android, fully offline.',
+  },
+  {
+    slug: 'allahs-names',
+    chapter: 'faith',
+    index: '03.6',
+    wide: true,
+    name: "Allah's Beautiful Names",
+    arabic: 'الأسماء الحسنى',
+    tagline: "Discover Allah's names and their meanings.",
+    type: 'Mobile app',
+    kind: 'Mobile app',
+    platforms: ['Android'],
+    year: '2025',
+    role: 'Sole developer',
+    status: 'live',
+    intro: ['This is a pocket book of the Asmaul Husna for Bosnian speakers. Every name opens a detail page with:'],
+    list: [
+      'the Arabic, transliteration, translation and explanation',
+      'the “deeds of the heart” and “deeds of the body” it inspires',
+      'the Quranic verses where it appears',
+    ],
+    outro: 'The app has search, 8 thematic categories and a “name of the day” card. Favorites and push notifications open a specific name. Light and dark themes come with animated, swipeable cards.',
+    features: [
+      'Arabic, transliteration, translation and explanation for every name',
+      'Deeds of the heart and deeds of the body',
+      'The Quranic verses where each name appears',
+      'Search, 8 thematic categories, a name of the day',
+      'Favorites and push notifications that open a name',
+    ],
+    stack: ['Expo SDK 57', 'React Compiler', 'Zustand', 'Reanimated 4', 'OneSignal'],
+    numbers: ['100 Quranic verses with translation', '8 categories'],
+    links: { android: 'https://play.google.com/store/apps/details?id=com.dzenispepic.allahbeautifulnames' },
+    card: [1, 2, 3, 4].map((i) => ({ kind: 'phone' as const, image: `phone-0${i}`, alt: ["Allah's Beautiful Names: the list of names", 'A name with the deeds of the heart and body', 'A Quranic verse for the name', 'Find a name by your state of heart'][i - 1] })),
+    gallery: [
+      ...['The list of names', 'Deeds of the heart and body', 'A Quranic verse for every name', 'Find a name by your state of heart', 'Discover a name at random, save favorites'].map((alt, i) => ({ kind: 'phone' as const, image: `phone-0${i + 1}`, alt })),
+      { kind: 'wide', image: 'feature', alt: "Allah's Beautiful Names feature graphic" },
+    ],
+    seo: "Allah's Beautiful Names is a pocket book of the Asmaul Husna: Arabic, transliteration, meaning, deeds of the heart and body, and the Quranic verses for every name.",
+  },
+
+  // ───────────────────────────── 04 · Products & clients
+  {
+    slug: 'saldo',
+    chapter: 'products',
+    index: '04.1',
+    flagship: true,
+    name: 'Saldo',
+    tagline: 'Track money, split with friends.',
+    type: 'iOS + iPadOS + Android + Web (monorepo)',
+    kind: 'iOS + iPadOS + Android + Web (monorepo)',
+    platforms: ['iOS', 'Android', 'Web'],
+    year: '2026',
+    role: 'Sole developer & designer',
+    status: 'live',
+    intro: [
+      'Saldo replaces the monthly spreadsheet. It is a personal ledger of income and expenses where the balance is always calculated, never typed. You add an expense in seconds, see the month at a glance, and drill into reports by period and category. Amounts can be in RSD, EUR or BAM, with daily central-bank exchange rates.',
+      'Groups handle shared costs for trips, flats and events:',
+    ],
+    list: ['six ways to split an expense', 'several payers per expense', 'settle-up with the fewest payments', 'receipts and comments'],
+    outro: "Group expenses can flow automatically into each member's personal ledger. The app works offline and syncs when it's back online. It has push notifications, a biometric lock and Excel import/export.",
+    features: [
+      'A ledger where the balance is always calculated',
+      'Quick add and a monthly overview',
+      'Reports by period and category; RSD, EUR or BAM',
+      'Groups: six ways to split, several payers, settle-up',
+      'Group expenses flow into personal ledgers',
+      'Offline-first with sync, push, biometric lock, Excel import/export',
+    ],
+    stack: ['Expo SDK 57', 'NativeWind', 'Next.js 16', 'Supabase', 'Edge Functions', 'TanStack Query', 'Recharts', 'FCM'],
+    numbers: ['11 languages', '23 tables', '4 edge functions'],
+    links: {
+      web: 'https://saldo-web-eight.vercel.app',
+      ios: 'https://apps.apple.com/app/id6787677911',
+      android: 'https://play.google.com/store/apps/details?id=com.kosuta.saldo',
+    },
+    tint: ['#4F46E5', '#4F46E5'],
+    card: [
+      { kind: 'phone', image: 'phone-01', alt: 'Saldo: the monthly cash view, your money always right' },
+      { kind: 'phone', image: 'phone-08', alt: 'Saldo in dark mode: works offline' },
+      { kind: 'browser', image: 'web-landing', url: 'saldo-web-eight.vercel.app', alt: 'Saldo web app landing page' },
+    ],
+    gallery: [
+      ...['Your money, always right', 'Split costs with friends', 'Any way to split', 'Settle up with the fewest payments', 'See where the money went', 'Reports that answer questions', 'Lent money? Keep track', 'Works offline, looks great at night'].map(
+        (alt, i) => ({ kind: 'phone' as const, image: `phone-0${i + 1}`, alt }),
+      ),
+      { kind: 'browser', image: 'web-landing', url: 'saldo-web-eight.vercel.app', alt: 'Saldo web app' },
+      { kind: 'wide', image: 'feature', alt: 'Saldo feature graphic' },
+    ],
+    full: { kind: 'browser', image: 'full-landing', url: 'saldo-web-eight.vercel.app', alt: 'The full Saldo web landing page, scrolling' },
+    seo: 'Saldo is a personal finance app with group expense splitting: a ledger with an always-calculated balance, reports, six ways to split and offline sync. iOS, Android and web.',
+  },
+  {
+    slug: 'ordino',
+    chapter: 'products',
+    index: '04.2',
+    name: 'Ordino',
+    tagline: 'Scheduling, patient records and reports in one calm system.',
+    type: 'Multi-tenant SaaS · Web + desktop',
+    kind: 'Multi-tenant SaaS · Web + desktop',
+    platforms: ['Web', 'Desktop'],
+    year: '2026',
+    role: 'Sole developer & designer',
+    status: 'live',
+    intro: [
+      'Ordino is practice-management software for private clinics of any specialty. Each clinic gets its own subdomain, colors, logo and letterhead. Doctors and nurses work with:',
+    ],
+    list: ['a calendar with a lane for each doctor', 'a patient chart with allergies, visits and ICD-10 diagnoses', 'a report editor with templates, snippets and autosave'],
+    outro: "Finished reports are locked and print on the clinic's A4 letterhead. From the desktop app they print silently, straight to the printer. Clinical photos live in private storage with consent flags and before/after comparison. Services, payments and earnings reports close the loop.",
+    features: [
+      'White-label: subdomain, colours, logo and letterhead per clinic',
+      'Calendar with a lane per doctor',
+      'Patient chart with ICD-10 diagnoses',
+      'Report editor with templates, autosave and locking',
+      'Silent A4 printing from the desktop app',
+      'Clinical photos with consent flags; earnings reports',
+    ],
+    stack: ['Next.js 16', 'Supabase (EU)', 'TanStack Query', 'TipTap', 'Electron'],
+    numbers: ['5 roles', '3 UI languages', 'tenant isolation covered by tests'],
+    links: { web: 'https://ordino.rs' },
+    tint: ['#0F766E', '#0F766E'],
+    card: [
+      { kind: 'browser', image: 'web-landing', url: 'ordino.rs', alt: 'Ordino landing page: scheduling, patient records and reports in one calm system' },
+      { kind: 'browser', image: 'shot-calendar', url: 'ordino.rs', alt: 'Ordino calendar with a lane per doctor' },
+    ],
+    gallery: [
+      { kind: 'browser', image: 'web-landing', url: 'ordino.rs', alt: 'Ordino landing page' },
+      { kind: 'browser', image: 'shot-calendar', url: 'ordino.rs', alt: 'Calendar with a lane per doctor' },
+      { kind: 'browser', image: 'shot-patient-chart', url: 'ordino.rs', alt: 'Patient chart' },
+      { kind: 'browser', image: 'shot-report-editor', url: 'ordino.rs', alt: 'Report editor' },
+      { kind: 'browser', image: 'shot-patients-list', url: 'ordino.rs', alt: 'Patients list' },
+      { kind: 'browser', image: 'shot-printed-report', url: 'ordino.rs', alt: 'Printed A4 report on the clinic letterhead' },
+      { kind: 'phone', image: 'mobile-landing', alt: 'Ordino on a phone' },
+    ],
+    full: { kind: 'browser', image: 'full-landing', url: 'ordino.rs', alt: 'The full Ordino landing page, scrolling' },
+    seo: 'Ordino is white-label practice-management software for private clinics: calendar, patient charts with ICD-10, report editor, silent A4 printing and earnings reports.',
+  },
+  {
+    slug: 'invest-portal',
+    chapter: 'products',
+    index: '04.3',
+    name: 'Invest Portal',
+    tagline: 'Digital apartment catalogs and sales management for real-estate investors.',
+    type: 'Multi-tenant SaaS · Web',
+    kind: 'Multi-tenant SaaS · Web',
+    platforms: ['Web'],
+    year: '2026',
+    role: 'Sole developer',
+    status: 'live',
+    intro: ['Invest Portal gives property developers a live public catalog of their buildings and a private back office to sell from.'],
+    list: [
+      'Admins model each building: wings, floors, apartment types, units and garage spots.',
+      'Investors keep availability, prices and galleries up to date on a color-coded availability board. They record sales with buyers and payment installments, and that data never reaches the public side.',
+      "Buyers browse each investor's own subdomain, with building pages, zoomable floor plans, filters, galleries and a map.",
+    ],
+    outro: 'Media is served from Cloudflare R2, and the database is backed up daily, encrypted.',
+    features: [
+      'Building model: wings, floors, types, units, garages',
+      'Color-coded availability board with status history',
+      'Private sales records with payment installments',
+      'Public catalog on every investor’s subdomain',
+      'Media on Cloudflare R2 · daily encrypted backups',
+    ],
+    stack: ['Next.js 15', 'Supabase', 'Cloudflare R2', 'Resend', 'Tailwind + shadcn/ui', 'Vercel wildcard subdomains'],
+    numbers: ['13 tables', '2 roles', 'live with real investor data'],
+    links: { web: 'https://www.investportal.rs', demo: 'https://samaldinvest.investportal.rs' },
+    tint: ['#4F46E5', '#4F46E5'],
+    card: [
+      { kind: 'browser', image: 'web-landing', url: 'investportal.rs', alt: 'Invest Portal landing page: manage real estate without chaos' },
+      { kind: 'browser', image: 'web-client-catalog', url: 'samaldinvest.investportal.rs', alt: 'A live investor catalog on its own subdomain' },
+      { kind: 'browser', image: 'web-availability-board', url: 'investportal.rs', alt: 'Availability board: free, reserved and sold units' },
+    ],
+    gallery: [
+      { kind: 'browser', image: 'web-landing', url: 'investportal.rs', alt: 'Invest Portal landing page' },
+      { kind: 'browser', image: 'web-availability-board', url: 'investportal.rs', alt: 'Availability board' },
+      { kind: 'browser', image: 'web-investor-dashboard', url: 'investportal.rs', alt: 'Investor dashboard' },
+      { kind: 'browser', image: 'web-building-detail', url: 'investportal.rs', alt: 'Building detail with apartment types' },
+      { kind: 'browser', image: 'web-client-catalog', url: 'samaldinvest.investportal.rs', alt: 'Live investor catalog' },
+      { kind: 'phone', image: 'mobile-landing', alt: 'Invest Portal on a phone' },
+      { kind: 'phone', image: 'mobile-client-catalog', alt: 'Investor catalog on a phone' },
+    ],
+    full: { kind: 'browser', image: 'full-landing', url: 'investportal.rs', alt: 'The full Invest Portal landing page, scrolling' },
+    seo: 'Invest Portal gives real-estate investors a public apartment catalog on their own subdomain and a private back office with an availability board and sales records.',
+  },
+  {
+    slug: 'pahulja',
+    chapter: 'products',
+    index: '04.4',
+    name: 'Udruženje „Pahulja”',
+    tagline: 'A home online for people living with myasthenia gravis.',
+    type: 'Website + member system',
+    kind: 'Website + member system',
+    platforms: ['Web'],
+    year: '2026',
+    role: 'Sole developer & designer',
+    status: 'live',
+    intro: [
+      'This is the new website and member system for Udruženje „Pahulja”, an association that supports people with myasthenia gravis, congenital myasthenic syndromes and other neuromuscular diseases, along with their families and doctors. Volunteers run everything from their phones:',
+    ],
+    list: ['news, albums, documents and pages, through a simple editor', 'membership applications', 'a member register with yearly fees and Excel export', 'digital membership cards'],
+    outro: 'Donations and fees are paid by scanning an NBS IPS QR code. The whole site works in Serbian Latin and Cyrillic and targets WCAG 2.2 AA. Lighthouse scores 100 for accessibility, best practices and SEO.',
+    features: [
+      'Serbian Latin and Cyrillic on the same URLs',
+      'Mobile-first admin for volunteers',
+      'Member register with fees and Excel export',
+      'Digital membership cards',
+      'IPS QR donations and fees',
+      'Two-factor admin login and an audit log',
+    ],
+    stack: ['Next.js 16', 'Supabase', 'TipTap', 'Resend', 'Playwright + axe-core', 'Lighthouse CI'],
+    numbers: ['Lighthouse 100 accessibility / best practices / SEO', 'WCAG 2.2 AA target'],
+    links: { web: 'https://pahulja.vercel.app' },
+    tint: ['#0B918E', '#0B918E'],
+    card: [
+      { kind: 'browser', image: 'web-landing', url: 'pahulja.vercel.app', alt: 'Pahulja association website: we connect people, share experiences and offer support' },
+      { kind: 'browser', image: 'web-admin-home', url: 'pahulja.vercel.app', alt: 'Pahulja admin home with quick actions for volunteers' },
+    ],
+    gallery: [
+      { kind: 'browser', image: 'web-landing', url: 'pahulja.vercel.app', alt: 'Pahulja website' },
+      { kind: 'browser', image: 'web-admin-home', url: 'pahulja.vercel.app', alt: 'Admin home' },
+      { kind: 'browser', image: 'web-admin-members', url: 'pahulja.vercel.app', alt: 'Member register' },
+      { kind: 'browser', image: 'web-admin-editor', url: 'pahulja.vercel.app', alt: 'Content editor' },
+      { kind: 'phone', image: 'mobile-landing', alt: 'Website on a phone' },
+      { kind: 'phone', image: 'mobile-membership', alt: 'Membership form on a phone' },
+      { kind: 'phone', image: 'mobile-donate', alt: 'Donate with an IPS QR code' },
+      { kind: 'phone', image: 'mobile-admin-member', alt: 'Admin: a member on a phone' },
+    ],
+    full: { kind: 'browser', image: 'full-landing', url: 'pahulja.vercel.app', alt: 'The full Pahulja website, scrolling' },
+    seo: 'Website and member system for Udruženje „Pahulja”, a myasthenia gravis association: mobile-first admin, member register, digital cards and IPS QR donations. Lighthouse 100 accessibility.',
+  },
+  {
+    slug: 'oud-andalous',
+    chapter: 'products',
+    index: '04.5',
+    name: 'Oud Andalous',
+    tagline: 'Oil perfume essences, oriental air fresheners and refillable bottles — online.',
+    type: 'E-commerce · Web',
+    kind: 'E-commerce · Web',
+    platforms: ['Web'],
+    year: '2025',
+    role: 'Sole developer',
+    status: 'live',
+    intro: [
+      'This is the online shop for Oud Andalous. It sells oil-based perfume essences in extract concentration, oriental air-freshener lines and refillable bottles to customers across Serbia.',
+      'The catalog has 386 fragrances from 90 brands, each with notes, longevity, sillage, season and a price per size. Shoppers get fast search by code, gender filters and a virtualized catalog that stays smooth on phones.',
+      'Checkout sends an itemized order to the shop and a styled confirmation to the customer, so there is no backend to maintain. The visual language is black and gold with an ornamental, oriental feel.',
+    ],
+    features: [
+      'Three catalogs: essences, air fresheners, bottles',
+      'Notes, longevity, sillage, season and price per size',
+      'Search by code, gender filters, virtualized list',
+      'Itemized order email + styled customer confirmation',
+    ],
+    stack: ['React 18', 'Vite', 'TypeScript', 'Tailwind', 'TanStack Virtual', 'EmailJS', 'Cloudflare'],
+    numbers: ['386 fragrances', '90 brands'],
+    links: { web: 'https://oudandalous.com', instagram: 'https://instagram.com/oud.andalous' },
+    tint: ['#FFD089', '#1A1A1A'],
+    card: [
+      { kind: 'browser', image: 'web-landing', url: 'oudandalous.com', alt: 'Oud Andalous shop: original oil essences, prices per size in black and gold' },
+      { kind: 'photo', image: 'photo-medina', alt: 'Medina air-freshener collection' },
+      { kind: 'photo', image: 'photo-sultan', alt: 'Sultan refillable perfume bottles' },
+    ],
+    gallery: [
+      { kind: 'browser', image: 'web-landing', url: 'oudandalous.com', alt: 'Oud Andalous shop' },
+      { kind: 'photo', image: 'photo-medina', alt: 'Medina collection' },
+      { kind: 'photo', image: 'photo-karavan', alt: 'Karavan collection' },
+      { kind: 'photo', image: 'photo-sultan', alt: 'Sultan bottles' },
+      { kind: 'photo', image: 'photo-andaluz', alt: 'Andaluz bottles' },
+      { kind: 'phone', image: 'mobile-landing', alt: 'The shop on a phone' },
+    ],
+    full: { kind: 'browser', image: 'full-landing', url: 'oudandalous.com', alt: 'The full Oud Andalous shop, scrolling' },
+    seo: 'Oud Andalous is an online shop for oil perfume essences, oriental air fresheners and refillable bottles: 386 fragrances from 90 brands, fast search and a smooth mobile catalog.',
+  },
+  {
+    slug: '1vs1',
+    chapter: 'products',
+    index: '04.6',
+    wide: true,
+    name: '1vs1',
+    tagline: 'The trivia duel for two people on one phone.',
+    type: 'iOS + Android game',
+    kind: 'iOS + Android game',
+    platforms: ['iOS', 'Android'],
+    year: '2022 → 2026',
+    role: 'Sole developer',
+    status: 'live',
+    intro: [
+      "This was my first React Native project, and it's a party game that's still alive. Two players sit face to face, and each gets half of the screen. A true/false statement appears: the first correct answer scores, and a wrong one costs double.",
+      'The game has 4,206 statements across six categories, four color themes, and named players with a head-to-head rival history. It needs no account and no internet. It started in 2022, was rebuilt in 2026 on the latest Expo SDK, and is now on both stores.',
+    ],
+    features: [
+      'Split screen for two players, face to face',
+      '+1 for a correct answer, −2 for a wrong one, 4-second timer',
+      'Six categories, 4,206 statements',
+      'Named players with head-to-head history',
+      'Four themes; no account, no internet',
+    ],
+    stack: ['Expo SDK 56', 'React Native', 'expo-router', 'i18next'],
+    numbers: ['4,206 statements', '6 categories'],
+    links: {
+      ios: 'https://apps.apple.com/app/id6782126538',
+      android: 'https://play.google.com/store/apps/details?id=com.onevsone.game',
+    },
+    tint: ['#F6AD55', '#0D1B2A'],
+    card: [1, 2, 3, 4].map((i) => ({ kind: 'phone' as const, image: `phone-0${i}`, alt: ['1vs1: faster, smarter, ready?', '1vs1: pick your colour, your arena', '1vs1: six categories', '1vs1: two named players, ready to duel'][i - 1] })),
+    gallery: [
+      ...['Faster. Smarter. Ready?', 'Your colour, your arena', 'Pick a category', 'You against them: name the players', 'The duel: a split screen, face to face', 'Moment of glory: the result'].map((alt, i) => ({ kind: 'phone' as const, image: `phone-0${i + 1}`, alt })),
+      { kind: 'wide', image: 'feature', alt: '1vs1 feature graphic' },
+    ],
+    seo: '1vs1 is a trivia duel for two players on one phone: split screen, 4,206 true/false statements in six categories and head-to-head history. iOS and Android.',
+  },
+];
+
+export const projectsBy = (chapter: Chapter) => projects.filter((p) => p.chapter === chapter);
+
+export const isMobile = (p: Project) => p.platforms.includes('iOS') || p.platforms.includes('Android');
+export const isWeb = (p: Project) => p.platforms.includes('Web');

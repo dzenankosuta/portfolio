@@ -1,0 +1,50 @@
+---
+import ChapterHeader from './ChapterHeader.astro';
+import ProjectCard from './ProjectCard.astro';
+import Device from './Device.astro';
+import { chapters, projectsBy, type Chapter } from '../data/projects';
+import { chapterIntros } from '../data/site';
+
+interface Props {
+  chapter: Chapter;
+}
+
+const { chapter } = Astro.props;
+const meta = chapters[chapter];
+const intro = chapterIntros[chapter];
+const list = projectsBy(chapter);
+const flagship = list.find((p) => p.flagship);
+// Mektebi's flagship gets an extra strip of screens (desktop only)
+const strip = chapter === 'faith' && flagship ? flagship.gallery.filter((m) => ['phone-03', 'phone-04', 'phone-05', 'feature'].includes(m.image)) : [];
+---
+
+<section class="section chapter" id={chapter} data-chapter={chapter} aria-labelledby={`${chapter}-title`}>
+  <div class:list={['wrap grid-lines', chapter === 'faith' && 'girih']}>
+    <ChapterHeader
+      index={meta.index}
+      title={meta.title}
+      id={`${chapter}-title`}
+      intro={intro.intro}
+      accent={'accent' in intro ? intro.accent : undefined}
+      facts={intro.facts}
+      ruled={chapter === 'schools'}
+    />
+
+    <div class="cards">
+      {
+        list.map((p, i) => (
+          <>
+            <ProjectCard project={p} i={i} />
+            {p.flagship && strip.length > 0 && (
+              <div class="strip" style="grid-column: 1 / -1; margin-top: calc(-1 * var(--gutter))" aria-hidden="true">
+                {strip.map((m) => (
+                  <Device slug={p.slug} media={m} />
+                ))}
+              </div>
+            )}
+          </>
+        ))
+      }
+    </div>
+  </div>
+</section>
