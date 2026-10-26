@@ -89,7 +89,7 @@ export const experience: Role[] = [
       'Owned the automated eSIM activation flow and built in-app chatbot support, simplifying setup for travelers.',
       'Worked with backend, design and product teams to improve cross-border connectivity.',
     ],
-    link: { label: 'lyntel.com', href: 'https://lyntel.com' },
+    link: { label: 'lyntel.io', href: 'https://www.lyntel.io/' },
   },
   {
     company: 'Novel & Friends',
