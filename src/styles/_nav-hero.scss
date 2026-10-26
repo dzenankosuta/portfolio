@@ -406,26 +406,27 @@ body[data-menu-open] {
     }
 
     &__copy {
-      grid-column: 1 / 6;
+      grid-column: 1 / 9;
       grid-row: 3;
     }
 
-    &__meta {
-      grid-column: 6 / 9;
-      grid-row: 3;
-      padding-left: 0;
+    // title block: details on top, the portrait standing on the rule below
+    &__side {
+      grid-column: 9 / 13;
+      grid-row: 3 / 5;
+      align-self: stretch;
+      display: flex;
+      flex-direction: column;
     }
 
     &__portrait {
-      grid-column: 9 / 13;
-      grid-row: 3 / 5;
-      max-width: 404px;
-      margin-top: 8px;
+      margin-top: auto;
+      padding-top: 32px;
       margin-bottom: -1px;
     }
 
     &__stats {
-      grid-column: 1 / 10;
+      grid-column: 1 / 9;
       grid-row: 4;
       position: relative;
       z-index: 2;
@@ -462,33 +463,9 @@ body[data-menu-open] {
       line-height: 44px;
     }
 
-    &__copy {
-      grid-column: 1 / 7;
-    }
-
-    &__meta {
-      grid-column: 7 / 10;
-    }
-
-    &__portrait {
-      grid-column: 10 / 13;
-    }
-
-    &__stats {
-      grid-column: 1 / 11;
-      grid-template-columns: repeat(10, minmax(0, 1fr));
-
-      li {
-        grid-column: span 2;
-      }
-
-      li:last-child {
-        grid-column: span 4;
-      }
-    }
-
+    // four stats share two thirds of a small laptop: keep five-digit values inside their column
     &__stat-value {
-      font-size: 48px;
+      font-size: clamp(36px, 3.75vw, 48px);
     }
   }
 
@@ -505,8 +482,7 @@ body[data-menu-open] {
     }
 
     &__copy,
-    &__meta,
-    &__portrait,
+    &__side,
     &__stats {
       grid-column: 1 / -1;
     }
@@ -517,9 +493,8 @@ body[data-menu-open] {
     }
 
     &__portrait {
-      justify-self: center;
       max-width: 420px;
-      margin-top: 48px;
+      margin: 48px auto 0;
       border-bottom: 1px solid var(--color-line);
     }
 

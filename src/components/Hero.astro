@@ -1,6 +1,6 @@
 ---
 import { Image } from 'astro:assets';
-import portrait from '../assets/portrait/me-cutout-mono.webp';
+import portrait from '../assets/portrait/me-bust-mono.webp';
 import { hero, person } from '../data/site';
 import { url } from '../lib/url';
 ---
@@ -29,34 +29,36 @@ import { url } from '../lib/url';
       </div>
     </div>
 
-    <dl class="hero__meta">
-      <div>
-        <dt class="t-label">Role</dt>
-        <dd>{person.role}<br />(React Native &amp; <span class="nowrap">full-stack</span>)</dd>
-      </div>
-      <div>
-        <dt class="t-label">Based in</dt>
-        <dd>{person.location}</dd>
-      </div>
-      <div>
-        <dt class="t-label">Local time</dt>
-        <dd><span class="live-dot" aria-hidden="true"></span><time data-clock>Novi Pazar</time></dd>
-      </div>
-      <div>
-        <dt class="t-label">Current employer</dt>
-        <dd>{person.employer}</dd>
-      </div>
-    </dl>
+    <div class="hero__side">
+      <dl class="hero__meta">
+        <div>
+          <dt class="t-label">Role</dt>
+          <dd>{person.role}<br />(React Native &amp; <span class="nowrap">full-stack</span>)</dd>
+        </div>
+        <div>
+          <dt class="t-label">Based in</dt>
+          <dd>{person.location}</dd>
+        </div>
+        <div>
+          <dt class="t-label">Local time</dt>
+          <dd><span class="live-dot" aria-hidden="true"></span><time data-clock>Novi Pazar</time></dd>
+        </div>
+        <div>
+          <dt class="t-label">Current employer</dt>
+          <dd>{person.employer}</dd>
+        </div>
+      </dl>
 
-    <div class="hero__portrait">
-      <Image
-        src={portrait}
-        alt={`${person.name}, portrait in black and white`}
-        widths={[340, 420, 640, 840, 1200]}
-        sizes="(max-width: 639px) 340px, (max-width: 1023px) 420px, 404px"
-        loading="eager"
-        fetchpriority="high"
-      />
+      <div class="hero__portrait">
+        <Image
+          src={portrait}
+          alt={`${person.name}, portrait in black and white`}
+          widths={[340, 420, 640, 840, 1200]}
+          sizes="(max-width: 639px) 340px, (max-width: 1023px) 420px, 432px"
+          loading="eager"
+          fetchpriority="high"
+        />
+      </div>
     </div>
 
     <ul class="hero__stats">
