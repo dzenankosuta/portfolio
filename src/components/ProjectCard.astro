@@ -18,6 +18,7 @@ const status = p.status === 'live' ? 'Live' : p.status === 'production' ? 'In pr
 const label = `${p.index}${p.flagship ? ' · Flagship' : ''}`;
 const meta = [p.kind, p.year, p.role].join(' · ');
 const hasRail = p.card.length > 1;
+const filmTime = p.film ? `${Math.floor(p.film / 60)}:${String(p.film % 60).padStart(2, '0')}` : null;
 ---
 
 <article class:list={['card', `card--${variant}`, p.tint && 'card--tinted']} style={style} data-reveal>
@@ -41,6 +42,15 @@ const hasRail = p.card.length > 1;
     <ul class="chips" aria-label="Platforms and status">
       {p.platforms.map((pl) => <li class="chip">{pl}</li>)}
       {status && <li class="chip chip--status">{status}</li>}
+      {
+        filmTime && (
+          <li>
+            <a class="chip chip--film" href={`${projectUrl(p.slug)}#film`} aria-label={`Watch the ${p.name} film, ${filmTime}`}>
+              <svg viewBox="0 0 10 10" aria-hidden="true"><path d="M2 1v8l7-4z" fill="currentColor"></path></svg>Film {filmTime}
+            </a>
+          </li>
+        )
+      }
     </ul>
     <div class="card__foot">
       <ProjectLinks links={p.links} name={p.name} />

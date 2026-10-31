@@ -2,6 +2,7 @@
 import { getImage } from 'astro:assets';
 import Base from '../../layouts/Base.astro';
 import Device from '../../components/Device.astro';
+import Film from '../../components/Film.astro';
 import ProjectLinks from '../../components/ProjectLinks.astro';
 import { projects, chapters, type Project } from '../../data/projects';
 import { person } from '../../data/site';
@@ -123,6 +124,17 @@ const jsonLd = [
       <div class="case__hero" data-reveal>
         {p.card.map((m, i) => <Device slug={p.slug} media={m} eager={i < 2} zoom />)}
       </div>
+
+      {
+        p.film && (
+          <section class="grid12 case__block" id="film" aria-labelledby="film-label">
+            <h2 class="t-label case__label" id="film-label">Film</h2>
+            <div class="case__film">
+              <Film slug={p.slug} name={p.name} duration={p.film} />
+            </div>
+          </section>
+        )
+      }
 
       <section class="grid12 case__block" aria-labelledby="overview">
         <h2 class="t-label case__label" id="overview">Overview</h2>

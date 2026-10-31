@@ -427,6 +427,46 @@ function initVideos() {
   videos.forEach((v) => io.observe(v));
 }
 
+// ── product films: the poster stays until play, then the right cut loads (vertical on phones)
+function initFilms() {
+  const films = $$('[data-film]');
+  if (!films.length) return;
+  const phone = matchMedia('(max-width: 639px)');
+  const io = new IntersectionObserver(
+    (entries) =>
+      entries.forEach((entry) => {
+        const v = $<HTMLVideoElement>('video', entry.target);
+        if (v && !entry.isIntersecting && !v.paused) v.pause();
+      }),
+    { threshold: 0.25 },
+  );
+  films.forEach((film) => {
+    const button = $<HTMLButtonElement>('.film__play', film);
+    const frame = $('.film__frame', film);
+    if (!button || !frame) return;
+    button.addEventListener('click', () => {
+      const tall = film.dataset.srcTall;
+      const video = document.createElement('video');
+      video.src = phone.matches && tall ? tall : film.dataset.src!;
+      video.controls = true;
+      video.playsInline = true;
+      video.preload = 'auto';
+      video.setAttribute('aria-label', button.getAttribute('aria-label')!.replace(/^(Play the |Pusti )/, ''));
+      frame.append(video);
+      film.classList.add('is-playing');
+      video.focus();
+      video.play().catch(() => {});
+      // only one film plays at a time
+      video.addEventListener('play', () => $$<HTMLVideoElement>('[data-film] video').forEach((o) => o !== video && o.pause()));
+      io.observe(film);
+    }, { once: true });
+    // the poster plays the film too (the button stays the one keyboard control)
+    frame.addEventListener('click', () => {
+      if (!film.classList.contains('is-playing')) button.click();
+    });
+  });
+}
+
 // ── horizontal device rails: keyboard-scrollable only when they actually overflow
 function initRails() {
   const rails = $$('.card__media, .case__hero, .case__rail');
@@ -494,3 +534,4 @@ initTop();
 initToTop();
 initLightbox();
 initVideos();
+initFilms();

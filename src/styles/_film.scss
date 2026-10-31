@@ -1,0 +1,151 @@
+// Product film: a poster above a player bar; the video loads only when played
+.film {
+  &__body {
+    @media (max-width: 639px) {
+      .film--tall & {
+        width: min(100%, calc(76svh * 9 / 16));
+        margin-inline: auto;
+      }
+    }
+  }
+
+  &__frame {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    border: 1px solid var(--color-line);
+    border-top: 2px solid var(--tint, var(--chapter-tint, var(--color-ink)));
+    background: #000;
+    cursor: pointer;
+
+    @media (max-width: 639px) {
+      .film--tall & {
+        aspect-ratio: 9 / 16;
+      }
+    }
+
+    .is-playing & {
+      cursor: auto;
+    }
+  }
+
+  &__poster,
+  video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  &__poster {
+    object-fit: cover;
+    transition: transform 600ms var(--ease-expo);
+  }
+
+  @media (hover: hover) {
+    &:not(.is-playing) &__frame:hover &__poster {
+      transform: scale(1.015);
+    }
+  }
+
+  video {
+    object-fit: contain;
+    background: #000;
+  }
+
+  &__bar {
+    display: flex;
+    align-items: stretch;
+    min-height: 56px;
+    border: 1px solid var(--color-line);
+    border-top: 0;
+    background: var(--color-bg);
+  }
+
+  &__play {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0 22px 0 18px;
+    border-right: 1px solid var(--color-line);
+    background: var(--color-signal);
+    color: var(--color-on-signal);
+    font: 700 14px/20px var(--font-mono);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    cursor: pointer;
+    transition:
+      transform 160ms var(--ease-out),
+      box-shadow 160ms var(--ease-out);
+
+    svg {
+      width: 22px;
+      height: 22px;
+    }
+
+    @media (hover: hover) {
+      &:hover,
+      .film__frame:hover + .film__bar & {
+        transform: translate(-2px, -2px);
+        box-shadow: 4px 4px 0 var(--color-ink);
+      }
+    }
+
+    &:active {
+      transform: none;
+      box-shadow: none;
+    }
+
+    &:focus-visible {
+      outline: 3px solid var(--color-focus);
+      outline-offset: 3px;
+    }
+  }
+
+  &__time {
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    border-right: 1px solid var(--color-line-soft);
+    font: 400 14px/20px var(--font-mono);
+    color: var(--color-ink);
+  }
+
+  &__note {
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    font: 500 11px/16px var(--font-mono);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+  }
+
+  &.is-playing &__play,
+  &.is-playing &__time {
+    display: none;
+  }
+
+  @media (max-width: 639px) {
+    &__bar {
+      flex-wrap: wrap;
+    }
+
+    &__play {
+      flex: 1;
+      justify-content: center;
+      min-height: 52px;
+    }
+
+    &__note {
+      flex-basis: 100%;
+      padding-block: 10px;
+      border-top: 1px solid var(--color-line-soft);
+    }
+
+    &.is-playing &__note {
+      border-top: 0;
+    }
+  }
+}

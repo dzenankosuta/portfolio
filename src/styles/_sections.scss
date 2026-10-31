@@ -334,6 +334,15 @@
     }
   }
 
+  &__film {
+    grid-column: 4 / 13;
+
+    @media (max-width: 1023px) {
+      grid-column: 1 / -1;
+      margin-top: 16px;
+    }
+  }
+
   @media (max-width: 1023px) {
     &__label,
     &__title-block,

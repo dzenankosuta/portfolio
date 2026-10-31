@@ -1,0 +1,44 @@
+---
+import { getImage } from 'astro:assets';
+import { img, hasImg } from '../lib/images';
+import { url } from '../lib/url';
+
+interface Props {
+  slug: string;
+  name: string;
+  /** length in seconds */
+  duration: number;
+  lang?: 'en' | 'sr';
+}
+
+const { slug, name, duration, lang = 'en' } = Astro.props;
+const tall = hasImg(slug, 'film-tall');
+const time = `${Math.floor(duration / 60)}:${String(duration % 60).padStart(2, '0')}`;
+const t =
+  lang === 'sr'
+    ? { play: 'Pusti film', aria: `Pusti film o aplikaciji ${name}, ${time}`, note: 'Bez muzike i naracije · titl je u slici' }
+    : { play: 'Play film', aria: `Play the ${name} film, ${time}`, note: 'No music, no voice-over · captions in the picture' };
+
+const wide = await getImage({ src: img(slug, 'film'), width: 1600, format: 'webp', quality: 80 });
+const wideSm = await getImage({ src: img(slug, 'film'), width: 960, format: 'webp', quality: 80 });
+const narrow = tall ? await getImage({ src: img(slug, 'film-tall'), width: 720, format: 'webp', quality: 80 }) : null;
+---
+
+<figure class:list={['film', tall && 'film--tall']} data-film data-src={url(`/media/film/${slug}.mp4`)} data-src-tall={tall ? url(`/media/film/${slug}-tall.mp4`) : undefined}>
+  <div class="film__body">
+    <div class="film__frame">
+      <picture>
+        {narrow && <source media="(max-width: 639px)" srcset={narrow.src} width={720} height={1280} />}
+        <img class="film__poster" src={wide.src} srcset={`${wideSm.src} 960w, ${wide.src} 1600w`} sizes="(max-width: 1023px) 92vw, 1000px" width={1600} height={900} alt="" loading="lazy" decoding="async" />
+      </picture>
+    </div>
+    <div class="film__bar">
+      <button class="film__play" type="button" aria-label={t.aria}>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z" fill="currentColor"></path></svg>
+        <span aria-hidden="true">{t.play}</span>
+      </button>
+      <span class="film__time" aria-hidden="true">{time}</span>
+      <span class="film__note">{t.note}</span>
+    </div>
+  </div>
+</figure>

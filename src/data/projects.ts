@@ -52,6 +52,8 @@ export interface Project {
   /** full-page capture shown in a scrolling browser frame */
   full?: Media;
   video?: string;
+  /** product film length in seconds: public/media/film/<slug>.mp4 (+ -tall), posters film.webp / film-tall.webp */
+  film?: number;
   note?: string;
   seo: string;
 }
@@ -155,6 +157,7 @@ export const projects: Project[] = [
   },
   {
     slug: 'zbornica',
+    film: 55,
     chapter: 'schools',
     index: '02.3',
     name: 'Zbornica',
@@ -361,6 +364,7 @@ export const projects: Project[] = [
   },
   {
     slug: 'noorani-qaida',
+    film: 30,
     chapter: 'faith',
     index: '03.3',
     name: 'Noorani Qaida',
@@ -408,6 +412,7 @@ export const projects: Project[] = [
   },
   {
     slug: 'nawaya',
+    film: 30,
     chapter: 'faith',
     index: '03.4',
     name: 'Nawaya',
@@ -457,6 +462,7 @@ export const projects: Project[] = [
   },
   {
     slug: 'qibla',
+    film: 30,
     chapter: 'faith',
     index: '03.5',
     name: 'Qibla & Salah',
@@ -637,6 +643,7 @@ export const projects: Project[] = [
   },
   {
     slug: 'invest-portal',
+    film: 35,
     chapter: 'products',
     index: '04.3',
     name: 'Invest Portal',

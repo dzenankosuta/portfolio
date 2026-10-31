@@ -193,6 +193,36 @@
     }
   }
 
+  &--film {
+    border-color: var(--chapter-accent);
+    color: var(--color-ink);
+    transition:
+      background-color 160ms var(--ease-out),
+      color 160ms var(--ease-out);
+
+    svg {
+      width: 8px;
+      height: 8px;
+      color: var(--chapter-accent);
+    }
+
+    @media (hover: hover) {
+      &:hover {
+        background: var(--chapter-accent);
+        color: var(--color-bg);
+
+        svg {
+          color: currentColor;
+        }
+      }
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--color-focus);
+      outline-offset: 2px;
+    }
+  }
+
   &--stack {
     text-transform: none;
     letter-spacing: 0;
