@@ -68,6 +68,7 @@ export const projects: Project[] = [
   // ───────────────────────────── 02 · Systems for schools
   {
     slug: 'eskolar',
+    film: 45,
     chapter: 'schools',
     index: '02.1',
     flagship: true,
@@ -110,6 +111,7 @@ export const projects: Project[] = [
   },
   {
     slug: 'cetrdesetka',
+    film: 45,
     chapter: 'schools',
     index: '02.2',
     name: 'Četrdesetka',
@@ -212,6 +214,7 @@ export const projects: Project[] = [
   },
   {
     slug: 'educycle',
+    film: 35,
     chapter: 'schools',
     index: '02.4',
     wide: true,
@@ -257,6 +260,7 @@ export const projects: Project[] = [
   // ───────────────────────────── 03 · Faith-tech
   {
     slug: 'mektebi',
+    film: 30,
     chapter: 'faith',
     index: '03.1',
     flagship: true,
@@ -309,6 +313,7 @@ export const projects: Project[] = [
   },
   {
     slug: 'quran-pomodoro',
+    film: 30,
     chapter: 'faith',
     index: '03.2',
     name: 'Quran Pomodoro',
@@ -508,6 +513,7 @@ export const projects: Project[] = [
   },
   {
     slug: 'allahs-names',
+    film: 35,
     chapter: 'faith',
     index: '03.6',
     wide: true,
@@ -548,6 +554,7 @@ export const projects: Project[] = [
   // ───────────────────────────── 04 · Products & clients
   {
     slug: 'saldo',
+    film: 30,
     chapter: 'products',
     index: '04.1',
     flagship: true,
@@ -598,6 +605,7 @@ export const projects: Project[] = [
   },
   {
     slug: 'ordino',
+    film: 30,
     chapter: 'products',
     index: '04.2',
     name: 'Ordino',
@@ -691,6 +699,7 @@ export const projects: Project[] = [
   },
   {
     slug: 'pahulja',
+    film: 25,
     chapter: 'products',
     index: '04.4',
     name: 'Udruženje „Pahulja”',
@@ -737,6 +746,7 @@ export const projects: Project[] = [
   },
   {
     slug: 'oud-andalous',
+    film: 22,
     chapter: 'products',
     index: '04.5',
     name: 'Oud Andalous',
@@ -780,6 +790,7 @@ export const projects: Project[] = [
   },
   {
     slug: 'dm-gebaeudereinigung',
+    film: 22,
     chapter: 'products',
     index: '04.6',
     wide: true,
@@ -831,6 +842,7 @@ export const projects: Project[] = [
   },
   {
     slug: '1vs1',
+    film: 25,
     chapter: 'products',
     index: '04.7',
     wide: true,
